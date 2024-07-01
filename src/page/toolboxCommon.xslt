@@ -482,6 +482,8 @@
     <sep></sep>
     <category name="&#xf10b; Variables" colour="330" custom="VARIABLE"></category>
     <sep></sep>
+    <category name="&#xf10b; Entities" colour="330" custom="MY_VARIABLES"></category>
+    <sep></sep>
     <category name="&#xf100; Vocab" colour="20">
       <category name="• RDF(S)">
         <block type="sparql_verb_object">

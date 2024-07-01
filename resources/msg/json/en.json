@@ -33,5 +33,16 @@
 	"EXECUTION_PLACEHOLDER": " < results will appear here > ",
 	"EXECUTION_PLACEHOLDER_TOOLTIP": "After you make a query, a table with the results will show up here.",
 	"EXECUTION_CONNECTION_ERROR": "Connection Error!",
-	"HASH_TOOLTIP": "Apply a hash function."
+	"HASH_TOOLTIP": "Apply a hash function.",
+
+	"NEW_TYPED_VARIABLE": "New %1...",
+	"NEW_TYPED_VARIABLE_TITLE": "New %1 name:",
+	"TYPED_VARIABLE_ALREADY_EXISTS" : "A %1 named \"%2\" already exists.",
+	"RENAME_VARIABLE_TYPED": "Rename %1...",
+	"RENAME_VARIABLE_TYPED_TITLE": "Rename all \"%1\" %2 to:",
+	"NEW_VARIABLE_TYPED": "Create \"%1\"...",
+
+	"DELETE_VARIABLE_TYPED_CONFIRMATION": "Delete %1 uses of the \"%2\" %3?",
+	"CANNOT_DELETE_VARIABLE_TYPED_PROCEDURE": "Can't delete the %3 \"%1\" because it is part of the definition of the procedure \"%2\"",
+	"DELETE_VARIABLE_TYPED": "Delete the \"%1\" %2"
 }

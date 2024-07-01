@@ -8,6 +8,8 @@ var Blockly = require('blockly');
 var SparqlGen = require('../generators/sparql.js');
 var Prefixes = require('./prefixes.js');
 
+var flyouts = require('./flyout')
+
 var NAME_TYPE = 'RESOURCE';
 
 var saveResource = function(block) {
@@ -110,20 +112,7 @@ var flyoutCategory = function(workspace) {
   return xmlList;
 };
 
-var blocklyFlyoutShow = Blockly.Flyout.prototype.show;
-
-/**
- * Show and populate the flyout.
- * @param {!Array|string} xmlList List of blocks to show.
- *     Variables and procedures have a custom set of blocks.
- */
-Blockly.Flyout.prototype.show = function(xmlList) {
-  if (xmlList == NAME_TYPE) {
-    // Special category for resources.
-    xmlList = flyoutCategory(this.workspace_.targetWorkspace);
-  }
-  blocklyFlyoutShow.call(this, xmlList);
-}
+flyouts.addFlyout(NAME_TYPE, flyoutCategory)
 
 module.exports = {
   NAME_TYPE: NAME_TYPE,

@@ -23,33 +23,53 @@ var _ = require('underscore'),
     Blockly = require('blockly'),
     Types = require('../core/types.js'),
     Blocks = require('../core/blocks.js'),
-    Msg = require('../core/msg.js');
+    Msg = require('../core/msg.js'),
+    MyVariable = require('../core/myvariables.js');
 
 var HUE = 330;
 
+var VAR_TYPE_TO_HUE = {
+    SOFTWARE_VAR: 200,
+    VULN_VAR: 100,
+}
+
 Blocks.block('sparql_variable', {
-  /**
-   * Block for variable getter.
-   * @this Blockly.Block
-   */
-  init: function() {
-    // this.setHelpUrl(Blockly.Msg.VARIABLES_GET_HELPURL);
-    this.setHelpUrl(Blockly.Msg.VARIABLES_GET_HELPURL);
-    this.setColour(HUE);
-    this.appendDummyInput()
-        .appendField("?")
-        .appendField(new Blockly.FieldVariable(), "VAR");
-    this.setOutput(true, "Var");
-    this.setTooltip('');
-    // this.appendDummyInput()
-    //     .appendField(Blockly.Msg.VARIABLES_GET_TITLE)
-    //     .appendField(new Blockly.FieldVariable(
-    //     Blockly.Msg.VARIABLES_GET_ITEM), 'VAR')
-    //     .appendField(Blockly.Msg.VARIABLES_GET_TAIL);
-    // this.setTooltip(Blockly.Msg.VARIABLES_GET_TOOLTIP);
-    // this.contextMenuMsg_ = Blockly.Msg.VARIABLES_GET_CREATE_SET;
-    // this.contextMenuType_ = 'variables_set';
-  }
+    /**
+     * Block for variable getter.
+     * @this Blockly.Block
+     */
+    init: function () {
+        // this.setHelpUrl(Blockly.Msg.VARIABLES_GET_HELPURL);
+        this.setHelpUrl(Blockly.Msg.VARIABLES_GET_HELPURL);
+        this.setColour(HUE);
+        this.appendDummyInput()
+            .appendField(" ")
+            .appendField(new Blockly.CustomFieldVariable(), "VAR");
+        this.setOutput(true, "Var");
+        this.setTooltip('');
+        // this.appendDummyInput()
+        //     .appendField(Blockly.Msg.VARIABLES_GET_TITLE)
+        //     .appendField(new Blockly.FieldVariable(
+        //     Blockly.Msg.VARIABLES_GET_ITEM), 'VAR')
+        //     .appendField(Blockly.Msg.VARIABLES_GET_TAIL);
+        // this.setTooltip(Blockly.Msg.VARIABLES_GET_TOOLTIP);
+        // this.contextMenuMsg_ = Blockly.Msg.VARIABLES_GET_CREATE_SET;
+        // this.contextMenuType_ = 'variables_set';
+
+    },
+    onchange: function (event) {
+        if (!(this.inputList[0] && this.inputList[0].fieldRow[1])) {
+            return
+        }
+
+        var name = this.inputList[0].fieldRow[1].getValue()
+        if (!name) return;
+        var type = MyVariable.getVariableType(name)
+        if (!type) return;
+
+        this.setColour(VAR_TYPE_TO_HUE[type])
+        this.inputList[0].fieldRow[0].setValue(MyVariable.getVariableTypeName(name))
+    }
 });
 
 Blockly.Blocks.variables_get = Blockly.Blocks.sparql_variable;

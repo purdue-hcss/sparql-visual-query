@@ -23,6 +23,8 @@
 var Blockly = require('blockly'),
     exportSvg = require('./exportSvg');
 
+require('./customFieldVariable.js');
+
 var baseInit_ = function(callback) {
   return function() {
     callback.call(this);
