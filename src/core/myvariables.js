@@ -14,7 +14,19 @@ var NAME_TYPE = 'MY_VARIABLES';
 
 var VAR_TYPES_TO_NAME = {
     "SOFTWARE_VAR": "Software",
+    "SOFTVERSION_VAR": "Software Version",
     "VULN_VAR": "Vulnerability",
+    "VULNTYPE_VAR": "Vulnerability Type",
+    "HARDVERSION_VAR": "Hardware Version",
+}
+
+// Dirty hack
+var REVERSE_VAR_TYPES = {
+    "SOFTVERSION_VAR": "Software Version",
+    "SOFTWARE_VAR": "Software",
+    "VULNTYPE_VAR": "Vulnerability Type",
+    "VULN_VAR": "Vulnerability",
+    "HARDVERSION_VAR": "Hardware Version",
 }
 
 var varToTypeMap = Object.create(null);
@@ -139,9 +151,9 @@ Blockly.FlyoutButton.prototype.onMouseUp = function (e) {
     // do this, but we're skipping that.
     Blockly.Flyout.terminateDrag_();
 
-    for (var type in VAR_TYPES_TO_NAME) {
-        var name = VAR_TYPES_TO_NAME[type]
-        if (e.currentTarget.textContent.toLowerCase().indexOf(name.toLowerCase()) !== -1) {
+    for (var type in REVERSE_VAR_TYPES) {
+        var name = REVERSE_VAR_TYPES[type]
+        if (e.currentTarget.textContent.toLowerCase().startsWith(name.toLowerCase(), 4)) {
             generateNameAndCreateVariable(this.targetWorkspace_, type)
             return
         }

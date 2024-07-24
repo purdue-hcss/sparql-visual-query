@@ -29,8 +29,11 @@ var _ = require('underscore'),
 var HUE = 330;
 
 var VAR_TYPE_TO_HUE = {
-    SOFTWARE_VAR: 200,
-    VULN_VAR: 100,
+    SOFTWARE_VAR: 300,
+    SOFTVERSION_VAR: 50,
+    VULN_VAR: 150,
+    VULNTYPE_VAR: 200,
+    HARDVERSION_VAR: 250 
 }
 
 Blocks.block('sparql_variable', {
