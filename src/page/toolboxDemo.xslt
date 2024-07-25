@@ -6,62 +6,8 @@
   <xsl:template name="toolbox-demo">
     <xml id="toolboxDemo" style="display: none">
       <category name="&#xf106; Query" colour="290">
-        <block type="sparql_execution_endpoint_query">
-          <field name="ENDPOINT">http://dbpedia.org/sparql</field>
-          <field name="LIMIT">5</field>
-          <value name="WHERE">
-            <shadow type="sparql_subject_propertylist">
-              <value name="SUBJECT">
-                <shadow type="variables_get">
-                  <field name="VAR">subj</field>
-                </shadow>
-              </value>
-              <statement name="PROPERTY_LIST">
-                <shadow type="sparql_verb_object">
-                  <value name="VERB">
-                    <shadow type="variables_get">
-                      <field name="VAR">pred</field>
-                    </shadow>
-                  </value>
-                  <value name="OBJECT">
-                    <shadow type="variables_get">
-                      <field name="VAR">obj</field>
-                    </shadow>
-                  </value>
-                </shadow>
-              </statement>
-            </shadow>
-          </value>
-        </block>
-        <block type="sparql_execution_endpoint_query">
-          <field name="ENDPOINT">http://live.dbpedia.org/sparql</field>
-          <field name="LIMIT">5</field>
-          <value name="WHERE">
-            <shadow type="sparql_subject_propertylist">
-              <value name="SUBJECT">
-                <shadow type="variables_get">
-                  <field name="VAR">subj</field>
-                </shadow>
-              </value>
-              <statement name="PROPERTY_LIST">
-                <shadow type="sparql_verb_object">
-                  <value name="VERB">
-                    <shadow type="variables_get">
-                      <field name="VAR">pred</field>
-                    </shadow>
-                  </value>
-                  <value name="OBJECT">
-                    <shadow type="variables_get">
-                      <field name="VAR">obj</field>
-                    </shadow>
-                  </value>
-                </shadow>
-              </statement>
-            </shadow>
-          </value>
-        </block>
-        <block type="sparql_execution_endpoint_query">
-          <field name="ENDPOINT">https://query.wikidata.org/bigdata/namespace/wdq/sparql</field>
+        <block type="sparql_no_execution_endpoint_query_fake">
+          <!-- <field name="ENDPOINT">http://dbpedia.org/sparql</field> -->
           <field name="LIMIT">5</field>
           <value name="WHERE">
             <shadow type="sparql_subject_propertylist">

@@ -53,9 +53,9 @@ var execBlock = function(options) {
         // if (!titleAndEndpointInput) {
           titleAndEndpointInput = this.appendDummyInput();
         // }
-        // titleAndEndpointInput
-        //     .appendField("from")
-        //     .appendField(new Blockly.FieldTextInput(""), "ENDPOINT");
+        titleAndEndpointInput
+            .appendField("from")
+            .appendField(new Blockly.FieldTextInput(""), "ENDPOINT");
       }
       if (options.parameters && _.isArray(options.parameters)) {
         for (var i = 0; i < options.parameters.length; i++) {
@@ -98,18 +98,10 @@ var execBlock = function(options) {
         }
       }
       if (options.directResultsField) {
-        // TODO: Replace query execution and returning "Results" with just returning the SPARQL query. 
         this.appendDummyInput("RESULTS")
-            // .appendField("↪")
-            // .appendField("", "RESULTS_CONTAINER");
+            .appendField("↪")
+            .appendField("", "RESULTS_CONTAINER");
       }
-      //   else {
-      //   // this.appendDummyInput();
-      //   this.appendStatementInput("RESULTS")
-      //       .setCheck(typeExt("Table"))
-      //       .appendField("↪");
-      // }
-
       this.setTooltip(Msg.EXECUTION_TOOLTIP);
     },
     onchange: function() {
@@ -366,24 +358,28 @@ var blockExec_ = function(block, queryBlock) {
   blockExecQuery_(block, queryStr);
 };
 
+// Blocks.block(
+//     'sparql_execution',
+//     execBlock());
+// Blocks.block(
+//     'sparql_execution_query',
+//     execBlock({baseQuery: true}));
+// Blocks.block(
+//     'sparql_execution_endpoint',
+//     execBlock({endpointField: true}));
+// Blocks.block(
+//     'sparql_execution_endpoint_query',
+//     execBlock({endpointField: true, baseQuery: true}));
+// Blocks.block(
+//     'sparql_execution_endpoint_fake',
+//     execBlock({endpointField: true, dontExecute: true}));
+// Blocks.block(
+//     'sparql_execution_endpoint_query_fake',
+//     execBlock({endpointField: true, baseQuery: true, dontExecute: true}));
 Blocks.block(
-    'sparql_execution',
-    execBlock());
-Blocks.block(
-    'sparql_execution_query',
-    execBlock({baseQuery: true}));
-Blocks.block(
-    'sparql_execution_endpoint',
-    execBlock({endpointField: true}));
-Blocks.block(
-    'sparql_execution_endpoint_query',
-    execBlock({endpointField: true, baseQuery: true}));
-Blocks.block(
-    'sparql_execution_endpoint_fake',
-    execBlock({endpointField: true, dontExecute: true}));
-Blocks.block(
-    'sparql_execution_endpoint_query_fake',
-    execBlock({endpointField: true, baseQuery: true, dontExecute: true}));
+    'sparql_no_execution_endpoint_query_fake',
+    execBlock({endpointField: false, baseQuery: true, dontExecute: true, directResultsField: false}));
+
 
 Blocks.block(
     'sparql_builtin_classes',
