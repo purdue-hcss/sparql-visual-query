@@ -106,16 +106,85 @@ Blocks.block('sparql_verb_object', {
    */
   init: function() {
     _initVerb(this);
-    this.appendValueInput("VERB")
-        .setCheck(typeExt("Verb"))
-        .appendField("━");
     this.appendValueInput("OBJECT")
+        .appendField("has a")
         .setCheck(typeExt("Object"))
-        .appendField("━▶");
     this.setInputsInline(true);
     this.setPreviousStatement(true, "PropertyList");
     this.setNextStatement(true, "PropertyList");
-    this.setTooltip(Msg.VERB_OBJECT_TOOLTIP);
+    // this.setTooltip(Msg.VERB_OBJECT_TOOLTIP);
+  }
+});
+
+Blocks.block('sparql_operate_on_object', {
+  /**
+   * Branch block consisting of a single verb (a predicate) followed by a single
+   * object.
+   * @this Blockly.Block
+   */
+  init: function() {
+    _initVerb(this);
+    this.appendValueInput("OBJECT")
+        .appendField("operates on")
+        .setCheck(typeExt("Object"))
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, "PropertyList");
+    this.setNextStatement(true, "PropertyList");
+    // this.setTooltip(Msg.VERB_OBJECT_TOOLTIP);
+  }
+});
+
+Blocks.block('sparql_vulnerable_to_object', {
+  /**
+   * Branch block consisting of a single verb (a predicate) followed by a single
+   * object.
+   * @this Blockly.Block
+   */
+  init: function() {
+    _initVerb(this);
+    this.appendValueInput("OBJECT")
+        .appendField("vulnerable to")
+        .setCheck(typeExt("Object"))
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, "PropertyList");
+    this.setNextStatement(true, "PropertyList");
+    // this.setTooltip(Msg.VERB_OBJECT_TOOLTIP);
+  }
+});
+
+Blocks.block('sparql_is_a_object', {
+  /**
+   * Branch block consisting of a single verb (a predicate) followed by a single
+   * object.
+   * @this Blockly.Block
+   */
+  init: function() {
+    _initVerb(this);
+    this.appendValueInput("OBJECT")
+        .appendField("is a")
+        .setCheck(typeExt("Object"))
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, "PropertyList");
+    this.setNextStatement(true, "PropertyList");
+    // this.setTooltip(Msg.VERB_OBJECT_TOOLTIP);
+  }
+});
+
+Blocks.block('sparql_depends_on_object', {
+  /**
+   * Branch block consisting of a single verb (a predicate) followed by a single
+   * object.
+   * @this Blockly.Block
+   */
+  init: function() {
+    _initVerb(this);
+    this.appendValueInput("OBJECT")
+        .appendField("depends on")
+        .setCheck(typeExt("Object"))
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, "PropertyList");
+    this.setNextStatement(true, "PropertyList");
+    // this.setTooltip(Msg.VERB_OBJECT_TOOLTIP);
   }
 });
 

@@ -37,7 +37,20 @@ Sparql.sparql_isa = function(block) {
 
 
 Sparql.sparql_verb_object = function(block) {
-  var value_verb = Sparql.valueToCode(block, 'VERB', Sparql.ORDER_ATOMIC);
+  // var value_verb = Sparql.valueToCode(block, 'VERB', Sparql.ORDER_ATOMIC);
+  var value_verb = "rdf:has-a"
+  var value_object = Sparql.valueToCode(block, 'OBJECT', Sparql.ORDER_ATOMIC);
+  var code =
+      value_verb ?
+        ( value_verb + ' ' +
+          (value_object ? value_object : '[]') +
+          Sparql.STMNT_BRK ) :
+        '';
+  return code;
+};
+
+Sparql.sparql_operate_on_object = function(block) {
+  var value_verb = "rdf:operates-on"
   var value_object = Sparql.valueToCode(block, 'OBJECT', Sparql.ORDER_ATOMIC);
   var code =
       value_verb ?
