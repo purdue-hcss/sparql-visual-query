@@ -48,13 +48,14 @@ var execBlock = function(options) {
         titleAndEndpointInput = this.appendDummyInput();
         titleAndEndpointInput.appendField(options.title);
       }
+      // TODO: set default endpoint to the server location, e.g. localhost:8080
       if (options.endpointField) {
         // if (!titleAndEndpointInput) {
           titleAndEndpointInput = this.appendDummyInput();
         // }
-        titleAndEndpointInput
-            .appendField("from")
-            .appendField(new Blockly.FieldTextInput(""), "ENDPOINT");
+        // titleAndEndpointInput
+        //     .appendField("from")
+        //     .appendField(new Blockly.FieldTextInput(""), "ENDPOINT");
       }
       if (options.parameters && _.isArray(options.parameters)) {
         for (var i = 0; i < options.parameters.length; i++) {
@@ -86,7 +87,7 @@ var execBlock = function(options) {
           // this.appendDummyInput();
           this.appendStatementInput("WHERE")
               .setCheck(typeExt("GraphPattern"))
-              .appendField("where");
+              .appendField("Match");
           Blocks.query.orderFields.init.call(this);
           this.setInputsInline(true);
         } else {
@@ -97,15 +98,17 @@ var execBlock = function(options) {
         }
       }
       if (options.directResultsField) {
+        // TODO: Replace query execution and returning "Results" with just returning the SPARQL query. 
         this.appendDummyInput("RESULTS")
-            .appendField("↪")
-            .appendField("", "RESULTS_CONTAINER");
-      } else {
-        // this.appendDummyInput();
-        this.appendStatementInput("RESULTS")
-            .setCheck(typeExt("Table"))
-            .appendField("↪");
+            // .appendField("↪")
+            // .appendField("", "RESULTS_CONTAINER");
       }
+      //   else {
+      //   // this.appendDummyInput();
+      //   this.appendStatementInput("RESULTS")
+      //       .setCheck(typeExt("Table"))
+      //       .appendField("↪");
+      // }
 
       this.setTooltip(Msg.EXECUTION_TOOLTIP);
     },
