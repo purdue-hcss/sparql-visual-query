@@ -188,6 +188,25 @@ Blocks.block('sparql_depends_on_object', {
   }
 });
 
+Blocks.block('sparql_is_called_object', {
+  /**
+   * Branch block consisting of a single verb (a predicate) followed by a single
+   * object.
+   * @this Blockly.Block
+   */
+  init: function() {
+    _initVerb(this);
+    this.appendValueInput("OBJECT")
+        .appendField("is called")
+        .setCheck(typeExt("Object"))
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, "PropertyList");
+    this.setNextStatement(true, "PropertyList");
+    // this.setTooltip(Msg.VERB_OBJECT_TOOLTIP);
+  }
+});
+
+
 Blocks.block('sparql_any_verb_object', {
   /**
    * Branch block consisting of an anonymous verb (predicate) followed by an

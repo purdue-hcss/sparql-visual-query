@@ -61,7 +61,15 @@
       <block type="sparql_depends_on_object">
         <value name="OBJECT">
           <shadow type="variables_get">
-            <field name="VAR">vulnerability</field>
+            <field name="VAR">version</field>
+          </shadow>
+        </value>
+      </block>
+      <sep gap="8"></sep>
+      <block type="sparql_is_called_object">
+        <value name="OBJECT">
+          <shadow type="variables_get">
+            <field name="VAR">text</field>
           </shadow>
         </value>
       </block>
@@ -189,7 +197,7 @@
       </block>
     </category>
     <sep></sep>
-    <!-- <category name="&#xf102; Logic" colour="210">
+    <category name="&#xf102; Logic" colour="210">
       <block type="sparql_filter">
         <value name="CONDITION">
           <shadow type="sparql_logic_boolean"></shadow>
@@ -291,7 +299,7 @@
         </value>
       </block>
     </category>
-    <category name="&#xf103; Math" colour="230">
+    <!-- <category name="&#xf103; Math" colour="230">
       <block type="sparql_math_number"></block>
       <sep gap="32"></sep>
       <block type="sparql_math_arithmetic">
