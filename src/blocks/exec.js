@@ -38,12 +38,24 @@ var typeExt = Types.getExtension;
 var defaultLimit = 5;
 var maxLimit = 50;
 
+
 var execBlock = function(options) {
   options = _.extend({}, options);
   return {
     init: function() {
       this.setHelpUrl('http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/#query-operation');
       var titleAndEndpointInput = null;
+      if(options.isAIUsed){          
+        const queryRegex = /SELECT DISTINCT \?s \?p \?o WHERE { \?s \?p \?o }/g;
+        this.setColour(290);
+        // this.appendDummyInput();
+        this.appendStatementInput("WHERE")
+            .setCheck(typeExt("GraphPattern"))
+            .appendField("Match");
+        Blocks.query.orderFields.init.call(this);
+        this.setInputsInline(true);
+
+      }
       if (options.title) {
         titleAndEndpointInput = this.appendDummyInput();
         titleAndEndpointInput.appendField(options.title);
@@ -382,6 +394,11 @@ Blocks.block(
     'sparql_no_execution_endpoint_query_fake',
     execBlock({endpointField: false, baseQuery: true, dontExecute: false, directResultsField: false}));
 
+
+Blocks.block(
+  'sparql_AI_generation',
+  execBlock({isAIUsed: true, endpointField: false, baseQuery: false, dontExecute: false, directResultsField: false,
+    sparqlQueryStr: "SELECT DISTINCT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 10"})); 
 
 Blocks.block(
     'sparql_builtin_classes',
