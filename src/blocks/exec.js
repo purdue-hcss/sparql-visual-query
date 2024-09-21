@@ -35,7 +35,7 @@ require('blob-polyfill');
 
 var typeExt = Types.getExtension;
 
-var defaultLimit = 5;
+var defaultLimit = 10;
 var maxLimit = 50;
 
 
@@ -45,75 +45,87 @@ var execBlock = function(options) {
     init: function() {
       this.setHelpUrl('http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/#query-operation');
       var titleAndEndpointInput = null;
-      if(options.isAIUsed){          
-        const queryRegex = /SELECT DISTINCT \?s \?p \?o WHERE { \?s \?p \?o }/g;
-        this.setColour(290);
-        // this.appendDummyInput();
-        this.appendStatementInput("WHERE")
-            .setCheck(typeExt("GraphPattern"))
-            .appendField("Match");
-        Blocks.query.orderFields.init.call(this);
-        this.setInputsInline(true);
-
-      }
-      if (options.title) {
-        titleAndEndpointInput = this.appendDummyInput();
-        titleAndEndpointInput.appendField(options.title);
-      }
-      // TODO: set default endpoint to the server location, e.g. localhost:8080
-      if (options.endpointField) {
-        // if (!titleAndEndpointInput) {
-          titleAndEndpointInput = this.appendDummyInput();
-        // }
-        titleAndEndpointInput
-            .appendField("from")
-            .appendField(new Blockly.FieldTextInput(""), "ENDPOINT");
-      }
-      if (options.parameters && _.isArray(options.parameters)) {
-        for (var i = 0; i < options.parameters.length; i++) {
-          var parameter = options.parameters[i];
-          if (parameter.name) {
-            var input = this.appendValueInput(parameter.name);
-            input.setAlign(Blockly.ALIGN_RIGHT); // or not?
-            if (parameter.type) {
-               input.setCheck(typeExt(parameter.type));
-            }
-            if (parameter.label) {
-               input.appendField(parameter.label);
-            }
-          }
-        }
-      }
-      this.setInputsInline(false);
-      if (options.builtinQuery) {
-        this.setColour(290);
-        if (!options.selfLimiting) {
-          this.appendDummyInput()
-              .appendField("limit to first")
-              .appendField(new Blockly.FieldNumber(defaultLimit, 0, maxLimit), "LIMIT")
-              .appendField("rows");
-        }
-      } else {
-        if (options.baseQuery) {
+      if(options.isAIUsed){   
+        // SELECT ... WHERE {}       
+        const queryRegex = /SELECT\s*.*\s*WHERE\s*{(.*)}/;
+        if(queryRegex.test(options.sparqlQueryStr)){
           this.setColour(290);
           // this.appendDummyInput();
           this.appendStatementInput("WHERE")
               .setCheck(typeExt("GraphPattern"))
               .appendField("Match");
+          const limitRegex = /LIMIT\s*(\d+)/;
+          const thisblock = document.querySelector('block[type="sparql_AI_generation"]');
+          const limitDOM = thisblock.querySelector('field[name="LIMIT"]');
+          const limit = options.sparqlQueryStr.match(limitRegex);
+          limitDOM.innerHTML = limit ? limit[1] : defaultLimit;
           Blocks.query.orderFields.init.call(this);
           this.setInputsInline(true);
-        } else {
-          this.setColour(330);
-          this.appendStatementInput("QUERY")
-              .setCheck(typeExt("SelectQuery"))
-              .appendField(" ⚙");
         }
       }
-      if (options.directResultsField) {
-        this.appendDummyInput("RESULTS")
-            .appendField("↪")
-            .appendField("", "RESULTS_CONTAINER");
+      else{
+        if (options.title) {
+          titleAndEndpointInput = this.appendDummyInput();
+          titleAndEndpointInput.appendField(options.title);
+        }
+        // TODO: set default endpoint to the server location, e.g. localhost:8080
+        if (options.endpointField) {
+          // if (!titleAndEndpointInput) {
+            titleAndEndpointInput = this.appendDummyInput();
+          // }
+          titleAndEndpointInput
+              .appendField("from")
+              .appendField(new Blockly.FieldTextInput(""), "ENDPOINT");
+        }
+        if (options.parameters && _.isArray(options.parameters)) {
+          for (var i = 0; i < options.parameters.length; i++) {
+            var parameter = options.parameters[i];
+            if (parameter.name) {
+              var input = this.appendValueInput(parameter.name);
+              input.setAlign(Blockly.ALIGN_RIGHT); // or not?
+              if (parameter.type) {
+                 input.setCheck(typeExt(parameter.type));
+              }
+              if (parameter.label) {
+                 input.appendField(parameter.label);
+              }
+            }
+          }
+        }
+        this.setInputsInline(false);
+        if (options.builtinQuery) {
+          this.setColour(290);
+          if (!options.selfLimiting) {
+            this.appendDummyInput()
+                .appendField("limit to first")
+                .appendField(new Blockly.FieldNumber(defaultLimit, 0, maxLimit), "LIMIT")
+                .appendField("rows");
+          }
+        } else {
+          if (options.baseQuery) {
+            this.setColour(290);
+            // this.appendDummyInput();
+            this.appendStatementInput("WHERE")
+                .setCheck(typeExt("GraphPattern"))
+                .appendField("Match");
+            Blocks.query.orderFields.init.call(this);
+            this.setInputsInline(true);
+          } else {
+            this.setColour(330);
+            this.appendStatementInput("QUERY")
+                .setCheck(typeExt("SelectQuery"))
+                .appendField(" ⚙");
+          }
+        }
+        if (options.directResultsField) {
+          this.appendDummyInput("RESULTS")
+              .appendField("↪")
+              .appendField("", "RESULTS_CONTAINER");
+        }
       }
+
+
+      
       this.setTooltip(Msg.EXECUTION_TOOLTIP);
     },
     onchange: function() {
@@ -398,7 +410,7 @@ Blocks.block(
 Blocks.block(
   'sparql_AI_generation',
   execBlock({isAIUsed: true, endpointField: false, baseQuery: false, dontExecute: false, directResultsField: false,
-    sparqlQueryStr: "SELECT DISTINCT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 10"})); 
+    sparqlQueryStr: "SELECT DISTINCT * WHERE { ?tf rdf:is-called 'Tensorflow'. ?remoteExec rdf:is-called 'RemoteExecution'. ?tfVersion rdf:depends-on ?libVersion } LIMIT 10"})); 
 
 Blocks.block(
     'sparql_builtin_classes',
