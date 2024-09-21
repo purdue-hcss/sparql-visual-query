@@ -108,19 +108,19 @@ var execBlock = function(options) {
       if (Blockly.dragMode_) {
         return;
       }
-      if (!options.directResultsField && !this.resultsInput) {
-        var resultsBlock = this.getInputTargetBlock("RESULTS");
-        if (!resultsBlock) {
-          resultsBlock = this.workspace.newBlock("sparql_execution_placeholder");
-          this.getInput("RESULTS").connection.connect(resultsBlock.previousConnection);
-          resultsBlock.initSvg();
-          resultsBlock.render();
-        }
-        this.resultsInput = resultsBlock.getInput("RESULTS");
-        if (!this.resultsInput) {
-          return;
-        }
-      }
+      // if (!options.directResultsField && !this.resultsInput) {
+      //   var resultsBlock = this.getInputTargetBlock("RESULTS");
+      //   if (!resultsBlock) {
+      //     resultsBlock = this.workspace.newBlock("sparql_execution_placeholder");
+      //     this.getInput("RESULTS").connection.connect(resultsBlock.previousConnection);
+      //     resultsBlock.initSvg();
+      //     resultsBlock.render();
+      //   }
+      //   this.resultsInput = resultsBlock.getInput("RESULTS");
+      //   if (!this.resultsInput) {
+      //     return;
+      //   }
+      // }
       if (options.baseQuery) {
         Blocks.query.orderFields.onchange.call(this);
       }
@@ -144,10 +144,12 @@ var execBlock = function(options) {
                       null;
               }
             }
+            console.log(parametersDict, "parametersDict");
             var limit = this.getFieldValue("LIMIT");
             if (limit || options.selfLimiting) {
               var limitStr = limit ? '\nLIMIT ' + limit : '';
               var sparql = options.builtinQuery(parametersDict) + limitStr;
+              console.log(sparql, "sparql");
                 if (sparql) {
                   Exec.blockExecQuery(this, sparql, options.extraColumns, this.resultsInput);
                 }
@@ -378,7 +380,7 @@ var blockExec_ = function(block, queryBlock) {
 //     execBlock({endpointField: true, baseQuery: true, dontExecute: true}));
 Blocks.block(
     'sparql_no_execution_endpoint_query_fake',
-    execBlock({endpointField: false, baseQuery: true, dontExecute: true, directResultsField: false}));
+    execBlock({endpointField: false, baseQuery: true, dontExecute: false, directResultsField: false}));
 
 
 Blocks.block(

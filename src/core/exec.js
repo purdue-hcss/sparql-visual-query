@@ -118,6 +118,7 @@ var sparqlExecAndPublish_ = function(endpointUrl, query, workspace, resultsInput
 };
 
 var blockExecQuery_ = function(block, queryStr, extraColumns, resultsHolder) {
+  console.log("blockExecQuery_", queryStr);
   if (!resultsHolder) {
     resultsHolder = block.getInput('RESULTS');
   }
@@ -156,6 +157,7 @@ var blockExec_ = function(block, extraColumns, queryBlock, resultsHolder) {
     queryBlock = block.getInputTargetBlock('QUERY');
   }
   var queryStr = SparqlGen.sparqlQuery(queryBlock);
+  console.log("queryStr", queryStr);
   blockExecQuery_(block, queryStr, extraColumns, resultsHolder);
 };
 
