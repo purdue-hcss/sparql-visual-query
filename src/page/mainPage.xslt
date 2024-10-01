@@ -23,11 +23,20 @@
           <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
         </xsl:if>
 
-        <script src="js/sparqlblocks.min.js"></script>
       </head>
       <body>
         <div id="blocklyDiv"></div>
-
+        <textarea type="text" id='input' style="
+            width: 200px;
+            height: 100px;
+            position: absolute;
+            right: 10px;
+            top: 24px;
+        "> </textarea>
+        <button name="button" style="
+          position: absolute;
+          right: 10px;
+      ">Generate</button>
         <xsl:call-template name="toolbox-demo"/>
         <xsl:call-template name="toolbox-test"/>
         <xsl:call-template name="toolbox-guide"/>
@@ -39,7 +48,8 @@
         <div id="flash-messages" class="flash-messages"></div>
 
         <xsl:call-template name="dialogs-for-guide"/>
-
+        
+        <script src="js/sparqlblocks.min.js"></script>
       </body>
     </html>
   </xsl:template>

@@ -29,7 +29,8 @@ var _ = require('underscore'),
     ResourcesToPatterns = require('../core/resourcesToPatterns.js'),
     SparqlGen = require('../generators/sparql.js'),
     FileSaver = require('browser-filesaver'),
-    JsonToBlocks = require('../core/jsonToBlocks.js');
+    JsonToBlocks = require('../core/jsonToBlocks.js'),
+    lodash = require('lodash');
 
 require('blob-polyfill');
 
@@ -54,12 +55,8 @@ var execBlock = function(options) {
           this.appendStatementInput("WHERE")
               .setCheck(typeExt("GraphPattern"))
               .appendField("Match");
-          const limitRegex = /LIMIT\s*(\d+)/;
-          const thisblock = document.querySelector('block[type="sparql_AI_generation"]');
-          const limitDOM = thisblock.querySelector('field[name="LIMIT"]');
-          const limit = options.sparqlQueryStr.match(limitRegex);
-          limitDOM.innerHTML = limit ? limit[1] : defaultLimit;
-          Blocks.query.orderFields.init.call(this);
+          
+          Blocks.query.orderFields.init.call(this);        
           this.setInputsInline(true);
         }
       }
@@ -129,6 +126,7 @@ var execBlock = function(options) {
       this.setTooltip(Msg.EXECUTION_TOOLTIP);
     },
     onchange: function() {
+      console.log(Blockly.Xml.blockToDom(this), "dom")
       if (Blockly.dragMode_) {
         return;
       }
@@ -218,7 +216,7 @@ var execBlock = function(options) {
           text: "Open Query in YASGUI",
           enabled: true,
           callback: function() {
-            var endpointUri_txt = thisBlock.getFieldValue('ENDPOINT');
+            var Urendpointi_txt = thisBlock.getFieldValue('ENDPOINT');
             var yasguiUrl =
                 "http://yasgui.org/#query=" +
                 encodeURIComponent(thisBlock.sparqlQueryStr) +
@@ -410,7 +408,7 @@ Blocks.block(
 Blocks.block(
   'sparql_AI_generation',
   execBlock({isAIUsed: true, endpointField: false, baseQuery: false, dontExecute: false, directResultsField: false,
-    sparqlQueryStr: "SELECT DISTINCT * WHERE { ?tf rdf:is-called 'Tensorflow'. ?remoteExec rdf:is-called 'RemoteExecution'. ?tfVersion rdf:depends-on ?libVersion } LIMIT 10"})); 
+    sparqlQueryStr: "SELECT DISTINCT * WHERE { ?software rdf:is-called 'Tensorflow'. ?remoteExec rdf:is-called 'RemoteExecution'. ?version rdf:depends-on ?libVersion FILTER NOT EXISTS {?software rdf:vulnerable-to ?vulnerability} } LIMIT 10"})); 
 
 Blocks.block(
     'sparql_builtin_classes',
@@ -577,3 +575,176 @@ Blocks.block('sparql_execution_error', {
     this.setEditable(false);
   }
 });
+
+var inputBlock = document.querySelector('textarea');
+const thisblock = document.querySelector('block[type="sparql_AI_generation"]');
+const btn = document.querySelector('button');
+btn.addEventListener('click', function(){
+  console.log('Generate Block from input');
+  generateBlock(inputBlock.value)
+})
+
+function generateBlock(sparqlQueryStr){
+  console.log(sparqlQueryStr, "sparqlQueryStr");
+// find limit
+const limitRegex = /LIMIT\s*(\d+)/i;
+const limit = sparqlQueryStr.match(limitRegex);
+const limitHTML = '<field name="LIMIT">'+
+(limit ? limit[1] : defaultLimit)+
+'</field>'
+
+// find all patternBlock
+var whereContent = sparqlQueryStr.match(/WHERE\s*{([^}]*)}/i)[1];
+var groups = whereContent.split('.').map(function(s) {
+    return s.trim();
+}).filter(Boolean);
+var results = [];
+for (var i = 0; i < groups.length; i++) {
+    var group = groups[i];
+    var parts = group.split(/\s+/);
+    if (parts[1] && parts[1].startsWith('rdf:')) {
+    parts[1] = parts[1].replace('rdf:', '');
+    results.push(parts.slice(0, 3));
+    }
+}
+
+var textReg = /^'.*'$/
+var variableReg = /^\?/
+
+var resultLength = results.length;
+var subj = [], obj = [];
+var patternBlockHTML = ''
+for(var i = 0; i < resultLength; i++){
+    subj[i] = textReg.test(results[i][0])?
+    '<block type="sparql_text">'+
+    '<field name="TEXT">'+results[i][0].replace(/'/g, "")+'</field>' +
+    '</block>':
+    '<block type="variables_get">' +
+    '<field name="VAR">'+results[i][0].replace("?", "")+'</field>' +
+    '</block>' 
+
+    obj[i] = textReg.test(results[i][2])?
+    '<block type="sparql_text">'+
+    '<field name="TEXT">'+results[i][2].replace(/'/g, "")+'</field>' +
+    '</block>':
+    '<block type="variables_get">' +
+    '<field name="VAR">'+results[i][2].replace("?", "")+'</field>' +
+    '</block>' 
+}
+for(var i = 0; i < resultLength; i++){
+    patternBlockHTML +=  '<value name="WHERE">'+
+    '<block type="sparql_subject_propertylist">' +
+    '<value name="SUBJECT">' +
+        subj[i]+
+    '</value>' +
+    '<statement name="PROPERTY_LIST">' +
+    '<block type="sparql_'+results[i][1].replace('-', '_')+'_object">' +
+        '<value name="OBJECT">' +
+        obj[i] +
+        '</value>' +
+    '</block>'+
+    '</statement>' +
+'</block>'+
+'</value>'
+}
+
+//find filter exists ...
+const filterExistsRegex = /FILTER\s*EXISTS\s*\{(.*?)\}/i;
+const filterExists = sparqlQueryStr.match(filterExistsRegex);
+const filterExistsPattern = filterExists ? filterExists[1] : '';
+var filterExistsHTML = '';
+console.log(filterExistsPattern, "filterExistsPattern");
+if(filterExists){
+    const filterExistsPatternSubject = textReg.test(filterExistsPattern.split(/\s+/)[0])?
+    '<block type="sparql_text">'+
+    '<field name="TEXT">'+filterExistsPattern.split(/\s+/)[0].replace(/'/g, "")+'</field>' +
+    '</block>':
+    '<block type="variables_get">' +
+    '<field name="VAR">'+filterExistsPattern.split(/\s+/)[0].replace("?", "")+'</field>' +
+    '</block>' 
+    const filterExistsPatternObject = textReg.test(filterExistsPattern.split(/\s+/)[2])?
+    '<block type="sparql_text">'+
+    '<field name="TEXT">'+filterExistsPattern.split(/\s+/)[2].replace(/'/g, "")+'</field>' +
+    '</block>':
+    '<block type="variables_get">' +
+    '<field name="VAR">'+filterExistsPattern.split(/\s+/)[2].replace("?", "")+'</field>' +
+    '</block>'
+    filterExistsHTML = filterExists ?'<value name="WHERE">'+ 
+    '<block type="sparql_filter">'+
+    '<value name="CONDITION">'+
+    '<block type="sparql_exists">' +
+    '    <value name="OP">' +
+    '        <block type="sparql_subject_propertylist">' +
+    '            <value name="SUBJECT">' +
+                    filterExistsPatternSubject+
+    '            </value>' +
+    '            <statement name="PROPERTY_LIST">' +
+
+                '<block type="sparql_'+filterExistsPattern.split(/\s+/)[1].replace('-', '_').replace('rdf:', '')+'_object">'+
+'                    <value name="OBJECT">' +
+                        filterExistsPatternObject+
+'                    </value>' +
+'                </block>' +
+    '            </statement>' +
+    '        </block>' +
+    '    </value>' +
+    '</block>' +
+    '</value>'+
+
+    '</block>'+ 
+    '</value>' : '';
+    
+}
+
+
+// find filter not exists ...
+const filterNotExistsRegex = /FILTER\s*NOT\s*EXISTS\s*\{(.*?)\}/i;
+const filterNotExists = sparqlQueryStr.match(filterNotExistsRegex);
+var filterNotExistsHTML = '';
+const filterNotExistsPattern = filterNotExists ? filterNotExists[1] : '';
+console.log(filterNotExistsPattern, "filterNotExistsPattern");
+console.log(filterNotExistsPattern.split(/\s+/)[1].replace('-', '_').replace('rdf:', ''));
+if(filterNotExists){
+    const filterNotExistsPatternSubject = textReg.test(filterNotExistsPattern.split(/\s+/)[0])?
+    '<block type="sparql_text">'+
+    '<field name="TEXT">'+filterNotExistsPattern.split(/\s+/)[0].replace(/'/g, "")+'</field>' +
+    '</block>':
+    '<block type="variables_get">' +
+    '<field name="VAR">'+filterNotExistsPattern.split(/\s+/)[0].replace("?", "")+'</field>' +
+    '</block>' 
+    const filterNotExistsPatternObject = textReg.test(filterNotExistsPattern.split(/\s+/)[2])?
+    '<block type="sparql_text">'+
+    '<field name="TEXT">'+filterNotExistsPattern.split(/\s+/)[2].replace(/'/g, "")+'</field>' +
+    '</block>':
+    '<block type="variables_get">' +
+    '<field name="VAR">'+filterNotExistsPattern.split(/\s+/)[2].replace("?", "")+'</field>' +
+    '</block>'
+    filterNotExistsHTML = filterNotExists ?'<value name="WHERE">'+ 
+    '<block type="sparql_filter">'+
+    '<value name="CONDITION">'+
+    '<block type="sparql_exists">' +
+    '    <value name="OP">' +
+    '        <block type="sparql_subject_propertylist">' +
+    '            <value name="SUBJECT">' +
+                    filterNotExistsPatternSubject+
+    '            </value>' +
+    '            <statement name="PROPERTY_LIST">' +
+
+                '<block type="sparql_'+filterNotExistsPattern.split(/\s+/)[1].replace('-', '_').replace('rdf:', '')+'_object">'+
+'                    <value name="OBJECT">' +
+                        filterNotExistsPatternObject+
+'                    </value>' +
+'                </block>' +
+    '            </statement>' +
+    '        </block>' +
+    '    </value>' +
+    '</block>' +
+    '</value>'+
+
+    '</block>'+ 
+    '</value>' : '';
+}
+
+thisblock.innerHTML = limitHTML+filterNotExistsHTML+filterExistsHTML+patternBlockHTML
+}
+
