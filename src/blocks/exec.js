@@ -54,7 +54,7 @@ var execBlock = function(options) {
           // this.appendDummyInput();
           this.appendStatementInput("WHERE")
               .setCheck(typeExt("GraphPattern"))
-              .appendField("Match");
+              .appendField("Find items that match");
           
           Blocks.query.orderFields.init.call(this);        
           this.setInputsInline(true);
@@ -94,7 +94,7 @@ var execBlock = function(options) {
           this.setColour(290);
           if (!options.selfLimiting) {
             this.appendDummyInput()
-                .appendField("limit to first")
+                .appendField("Show only the first")
                 .appendField(new Blockly.FieldNumber(defaultLimit, 0, maxLimit), "LIMIT")
                 .appendField("rows");
           }
@@ -114,19 +114,18 @@ var execBlock = function(options) {
                 .appendField(" ⚙");
           }
         }
-        if (options.directResultsField) {
-          this.appendDummyInput("RESULTS")
-              .appendField("↪")
-              .appendField("", "RESULTS_CONTAINER");
-        }
+        
       }
 
-
+      // if (options.directResultsField) {
+        this.appendDummyInput("RESULTS")
+            .appendField("↪")
+            .appendField("", "RESULTS_CONTAINER");
+      // }
       
       this.setTooltip(Msg.EXECUTION_TOOLTIP);
     },
     onchange: function() {
-      console.log(Blockly.Xml.blockToDom(this), "dom")
       if (Blockly.dragMode_) {
         return;
       }
@@ -166,7 +165,6 @@ var execBlock = function(options) {
                       null;
               }
             }
-            console.log(parametersDict, "parametersDict");
             var limit = this.getFieldValue("LIMIT");
             if (limit || options.selfLimiting) {
               var limitStr = limit ? '\nLIMIT ' + limit : '';
@@ -216,7 +214,8 @@ var execBlock = function(options) {
           text: "Open Query in YASGUI",
           enabled: true,
           callback: function() {
-            var Urendpointi_txt = thisBlock.getFieldValue('ENDPOINT');
+            // var endpointUri_txt = thisBlock.getFieldValue('ENDPOINT');
+            var endpointUri_txt = ''
             var yasguiUrl =
                 "http://yasgui.org/#query=" +
                 encodeURIComponent(thisBlock.sparqlQueryStr) +
@@ -303,7 +302,6 @@ var sparqlExecAndPublish_ = function(endpointUrl, query, block, connection, call
   var progressBlock = setNewBlock_('sparql_execution_in_progress', block, connection);
   // progressBlock.initSvg();
   // connect_(connection, progressBlock);
-
   return Exec.sparqlExec(endpointUrl, query, function(err, data) {
     var resultBlock = null;
     if (err) {
@@ -344,7 +342,7 @@ var blockExecQuery_ = function(block, queryStr) {
   if (!resInput) return;
   var resConnection = resInput.connection;
   if (!resConnection) return;
-  var endpointUri_txt = block.getFieldValue('ENDPOINT');
+  var endpointUri_txt = 'http://dbpedia.org/sparql'; //block.getFieldValue('ENDPOINT');
   var endpointUri = endpointUri_txt ? encodeURI(endpointUri_txt) : null;
   if (endpointUri != block.endpointUri || queryStr != block.sparqlQueryStr) {
     block.endpointUri = endpointUri;
@@ -365,8 +363,8 @@ var blockExecQuery_ = function(block, queryStr) {
     } else {
       block.resultsData = null;
       var phBlock = setNewBlock_('sparql_execution_placeholder', block, resConnection);
-      // newBlock.initSvg();
-      // connect_(resConnection, phBlock);
+      newBlock.initSvg();
+      connect_(resConnection, phBlock);
       block.queryReq = null;
     }
 
@@ -576,6 +574,8 @@ Blocks.block('sparql_execution_error', {
   }
 });
 
+var prefix = "ns:"
+
 var inputBlock = document.querySelector('textarea');
 const thisblock = document.querySelector('block[type="sparql_AI_generation"]');
 const btn = document.querySelector('button');
@@ -602,14 +602,21 @@ var results = [];
 for (var i = 0; i < groups.length; i++) {
     var group = groups[i];
     var parts = group.split(/\s+/);
-    if (parts[1] && parts[1].startsWith('rdf:')) {
-    parts[1] = parts[1].replace('rdf:', '');
+    if (parts[1] && parts[1].startsWith(prefix)) {
+    parts[1] = parts[1].replace(prefix, '');
     results.push(parts.slice(0, 3));
     }
 }
 
-var textReg = /^'.*'$/
+var textReg = /^('.*'$)|(".*"$)/
 var variableReg = /^\?/
+
+var verb2predMap = {
+  "name": "is_called",
+  "hasVersion": "has_a_version_called",
+  "affects": "affects"
+} 
+
 
 var resultLength = results.length;
 var subj = [], obj = [];
@@ -617,7 +624,7 @@ var patternBlockHTML = ''
 for(var i = 0; i < resultLength; i++){
     subj[i] = textReg.test(results[i][0])?
     '<block type="sparql_text">'+
-    '<field name="TEXT">'+results[i][0].replace(/'/g, "")+'</field>' +
+    '<field name="TEXT">'+results[i][0].replace(/'/g, "").replace(/"/g, "")+'</field>' +
     '</block>':
     '<block type="variables_get">' +
     '<field name="VAR">'+results[i][0].replace("?", "")+'</field>' +
@@ -625,7 +632,7 @@ for(var i = 0; i < resultLength; i++){
 
     obj[i] = textReg.test(results[i][2])?
     '<block type="sparql_text">'+
-    '<field name="TEXT">'+results[i][2].replace(/'/g, "")+'</field>' +
+    '<field name="TEXT">'+results[i][2].replace(/'/g, "").replace(/"/g, "")+'</field>' +
     '</block>':
     '<block type="variables_get">' +
     '<field name="VAR">'+results[i][2].replace("?", "")+'</field>' +
@@ -638,7 +645,7 @@ for(var i = 0; i < resultLength; i++){
         subj[i]+
     '</value>' +
     '<statement name="PROPERTY_LIST">' +
-    '<block type="sparql_'+results[i][1].replace('-', '_')+'_object">' +
+    '<block type="sparql_'+verb2predMap[results[i][1]]+'_object">' +
         '<value name="OBJECT">' +
         obj[i] +
         '</value>' +
@@ -653,18 +660,17 @@ const filterExistsRegex = /FILTER\s*EXISTS\s*\{(.*?)\}/i;
 const filterExists = sparqlQueryStr.match(filterExistsRegex);
 const filterExistsPattern = filterExists ? filterExists[1] : '';
 var filterExistsHTML = '';
-console.log(filterExistsPattern, "filterExistsPattern");
 if(filterExists){
     const filterExistsPatternSubject = textReg.test(filterExistsPattern.split(/\s+/)[0])?
     '<block type="sparql_text">'+
-    '<field name="TEXT">'+filterExistsPattern.split(/\s+/)[0].replace(/'/g, "")+'</field>' +
+    '<field name="TEXT">'+filterExistsPattern.split(/\s+/)[0].replace(/'/g, "").replace(/"/g, "")+'</field>' +
     '</block>':
     '<block type="variables_get">' +
     '<field name="VAR">'+filterExistsPattern.split(/\s+/)[0].replace("?", "")+'</field>' +
     '</block>' 
     const filterExistsPatternObject = textReg.test(filterExistsPattern.split(/\s+/)[2])?
     '<block type="sparql_text">'+
-    '<field name="TEXT">'+filterExistsPattern.split(/\s+/)[2].replace(/'/g, "")+'</field>' +
+    '<field name="TEXT">'+filterExistsPattern.split(/\s+/)[2].replace(/'/g, "").replace(/"/g, "")+'</field>' +
     '</block>':
     '<block type="variables_get">' +
     '<field name="VAR">'+filterExistsPattern.split(/\s+/)[2].replace("?", "")+'</field>' +
@@ -680,7 +686,7 @@ if(filterExists){
     '            </value>' +
     '            <statement name="PROPERTY_LIST">' +
 
-                '<block type="sparql_'+filterExistsPattern.split(/\s+/)[1].replace('-', '_').replace('rdf:', '')+'_object">'+
+                '<block type="sparql_'+filterExistsPattern.split(/\s+/)[1].replace('-', '_').replace(prefix, '')+'_object">'+
 '                    <value name="OBJECT">' +
                         filterExistsPatternObject+
 '                    </value>' +
@@ -702,19 +708,17 @@ const filterNotExistsRegex = /FILTER\s*NOT\s*EXISTS\s*\{(.*?)\}/i;
 const filterNotExists = sparqlQueryStr.match(filterNotExistsRegex);
 var filterNotExistsHTML = '';
 const filterNotExistsPattern = filterNotExists ? filterNotExists[1] : '';
-console.log(filterNotExistsPattern, "filterNotExistsPattern");
-console.log(filterNotExistsPattern.split(/\s+/)[1].replace('-', '_').replace('rdf:', ''));
 if(filterNotExists){
     const filterNotExistsPatternSubject = textReg.test(filterNotExistsPattern.split(/\s+/)[0])?
     '<block type="sparql_text">'+
-    '<field name="TEXT">'+filterNotExistsPattern.split(/\s+/)[0].replace(/'/g, "")+'</field>' +
+    '<field name="TEXT">'+filterNotExistsPattern.split(/\s+/)[0].replace(/'/g, "").replace(/"/g, "")+'</field>' +
     '</block>':
     '<block type="variables_get">' +
     '<field name="VAR">'+filterNotExistsPattern.split(/\s+/)[0].replace("?", "")+'</field>' +
     '</block>' 
     const filterNotExistsPatternObject = textReg.test(filterNotExistsPattern.split(/\s+/)[2])?
     '<block type="sparql_text">'+
-    '<field name="TEXT">'+filterNotExistsPattern.split(/\s+/)[2].replace(/'/g, "")+'</field>' +
+    '<field name="TEXT">'+filterNotExistsPattern.split(/\s+/)[2].replace(/'/g, "").replace(/"/g, "")+'</field>' +
     '</block>':
     '<block type="variables_get">' +
     '<field name="VAR">'+filterNotExistsPattern.split(/\s+/)[2].replace("?", "")+'</field>' +
@@ -722,7 +726,7 @@ if(filterNotExists){
     filterNotExistsHTML = filterNotExists ?'<value name="WHERE">'+ 
     '<block type="sparql_filter">'+
     '<value name="CONDITION">'+
-    '<block type="sparql_exists">' +
+    '<block type="sparql_not_exists">' +
     '    <value name="OP">' +
     '        <block type="sparql_subject_propertylist">' +
     '            <value name="SUBJECT">' +
@@ -730,7 +734,7 @@ if(filterNotExists){
     '            </value>' +
     '            <statement name="PROPERTY_LIST">' +
 
-                '<block type="sparql_'+filterNotExistsPattern.split(/\s+/)[1].replace('-', '_').replace('rdf:', '')+'_object">'+
+                '<block type="sparql_'+filterNotExistsPattern.split(/\s+/)[1].replace('-', '_').replace(prefix, '')+'_object">'+
 '                    <value name="OBJECT">' +
                         filterNotExistsPatternObject+
 '                    </value>' +

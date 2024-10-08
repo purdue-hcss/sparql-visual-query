@@ -35,7 +35,7 @@
         </block>
       </category>
       <xsl:call-template name="toolbox-common"/>
-      <category name="&#xf106; AI generation" colour="290">
+      <category name="&#xf106; Auto Generation" colour="290">
         <block type="sparql_AI_generation">
           <!-- <field name="ENDPOINT">http://dbpedia.org/sparql</field> -->
           <field name="LIMIT">5</field>

@@ -43,17 +43,17 @@ var setOrderField = function(queryBlock, index, lastOrderField, limitField) {
     input.appendField(dirField, dirFieldName);
   }
   if (limitField) {
-    input.appendField("  limit to first", otherFieldNames[0])
+    input.appendField("  Show only the first", otherFieldNames[0])
         .appendField(
           new Blockly.FieldNumber(oldLimitValue || defaultLimit, 0, maxLimit),
           otherFieldNames[1])
-        .appendField("rows", otherFieldNames[2]);
+        .appendField("results", otherFieldNames[2]);
   } else {
     input.appendField(
         index > 1 ?
             (!lastOrderField || index > 2 ? ", " : "") +
                 (lastOrderField ? "and " : "") + "then by" :
-            "order by",
+            "Sort by",
         otherFieldNames[0]);
   }
   if (lastOrderField) {

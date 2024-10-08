@@ -116,6 +116,42 @@ Blocks.block('sparql_verb_object', {
   }
 });
 
+Blocks.block('sparql_has_a_version_called_object', {
+  /**
+   * Branch block consisting of a single verb (a predicate) followed by a single
+   * object.
+   * @this Blockly.Block
+   */
+  init: function() {
+    _initVerb(this);
+    this.appendValueInput("OBJECT")
+        .appendField("has a version called")
+        .setCheck(typeExt("Object"))
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, "PropertyList");
+    this.setNextStatement(true, "PropertyList");
+    // this.setTooltip(Msg.VERB_OBJECT_TOOLTIP);
+  }
+});
+
+Blocks.block('sparql_affects_object', {
+  /**
+   * Branch block consisting of a single verb (a predicate) followed by a single
+   * object.
+   * @this Blockly.Block
+   */
+  init: function() {
+    _initVerb(this);
+    this.appendValueInput("OBJECT")
+        .appendField("affects")
+        .setCheck(typeExt("Object"))
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, "PropertyList");
+    this.setNextStatement(true, "PropertyList");
+    // this.setTooltip(Msg.VERB_OBJECT_TOOLTIP);
+  }
+});
+
 Blocks.block('sparql_operate_on_object', {
   /**
    * Branch block consisting of a single verb (a predicate) followed by a single

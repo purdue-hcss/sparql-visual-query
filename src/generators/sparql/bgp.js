@@ -20,6 +20,7 @@
 'use strict';
 
 var Sparql = require('../sparql.js');
+var prefix = "ns:"
 
 Sparql.sparql_isa = function(block) {
   var value_type =
@@ -35,14 +36,26 @@ Sparql.sparql_isa = function(block) {
   return code;
 };
 
-
-Sparql.sparql_verb_object = function(block) {
+Sparql.sparql_affects_object = function(block) {
   // var value_verb = Sparql.valueToCode(block, 'VERB', Sparql.ORDER_ATOMIC);
-  var value_verb = "rdf:has-a"
+  var value_verb = prefix+"affects"
   var value_object = Sparql.valueToCode(block, 'OBJECT', Sparql.ORDER_ATOMIC);
   var code =
       value_verb ?
-        ( value_verb + ' ' +
+        ( prefix+"affects" + ' ' +
+          (value_object ? value_object : '[]') +
+          Sparql.STMNT_BRK ) :
+        '';
+  return code;
+};
+
+Sparql.sparql_has_a_version_called_object = function(block) {
+  // var value_verb = Sparql.valueToCode(block, 'VERB', Sparql.ORDER_ATOMIC);
+  var value_verb = prefix+"has-a-version-called"
+  var value_object = Sparql.valueToCode(block, 'OBJECT', Sparql.ORDER_ATOMIC);
+  var code =
+      value_verb ?
+        ( prefix+"hasVersion" + ' ' +
           (value_object ? value_object : '[]') +
           Sparql.STMNT_BRK ) :
         '';
@@ -50,7 +63,7 @@ Sparql.sparql_verb_object = function(block) {
 };
 
 Sparql.sparql_operate_on_object = function(block) {
-  var value_verb = "rdf:operates-on"
+  var value_verb = prefix+"operates-on"
   var value_object = Sparql.valueToCode(block, 'OBJECT', Sparql.ORDER_ATOMIC);
   var code =
       value_verb ?
@@ -62,7 +75,7 @@ Sparql.sparql_operate_on_object = function(block) {
 };
 
 Sparql.sparql_is_a_object = function(block) {
-  var value_verb = "rdf:is-a"
+  var value_verb = prefix+"is-a"
   var value_object = Sparql.valueToCode(block, 'OBJECT', Sparql.ORDER_ATOMIC);
   var code =
       value_verb ?
@@ -74,7 +87,7 @@ Sparql.sparql_is_a_object = function(block) {
 };
 
 Sparql.sparql_vulnerable_to_object = function(block) {
-  var value_verb = "rdf:vulnerable-to"
+  var value_verb = prefix+"vulnerable-to"
   var value_object = Sparql.valueToCode(block, 'OBJECT', Sparql.ORDER_ATOMIC);
   var code =
       value_verb ?
@@ -87,7 +100,7 @@ Sparql.sparql_vulnerable_to_object = function(block) {
 
 
 Sparql.sparql_depends_on_object = function(block) {
-  var value_verb = "rdf:depends-on"
+  var value_verb = prefix+"depends-on"
   var value_object = Sparql.valueToCode(block, 'OBJECT', Sparql.ORDER_ATOMIC);
   var code =
       value_verb ?
@@ -99,11 +112,11 @@ Sparql.sparql_depends_on_object = function(block) {
 }
 
 Sparql.sparql_is_called_object = function(block) {
-  var value_verb = "rdf:is-called"
+  var value_verb = prefix+"is-called"
   var value_object = Sparql.valueToCode(block, 'OBJECT', Sparql.ORDER_ATOMIC);
   var code =
       value_verb ?
-        ( value_verb + ' ' +
+        ( prefix+"name" + ' ' +
           (value_object ? value_object : '[]') +
           Sparql.STMNT_BRK ) :
         '';

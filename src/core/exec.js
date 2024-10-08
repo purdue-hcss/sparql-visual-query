@@ -46,6 +46,7 @@ var sparqlExec_ = function(endpointUrl, query, callback) {
       callback(null,data);
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
+      console.log("Error: " + textStatus + " " + errorThrown);
       callback({ jqXHR: jqXHR, textStatus: textStatus, errorThrown: errorThrown });
     });
 };
@@ -109,7 +110,10 @@ var sparqlExecAndPublish_ = function(endpointUrl, query, workspace, resultsInput
       } else {
         resultField = msg.EXECUTION_CONNECTION_ERROR;
       }
-    } else {
+    } else if(data.results.bindings.length == 0) {
+      resultField = msg.EXECUTION_NO_RESULTS;
+    }
+      else {
       resultField = new FieldTable(data, extraColumns);
     }
     setResult_(resultsInput, resultField);
@@ -118,12 +122,12 @@ var sparqlExecAndPublish_ = function(endpointUrl, query, workspace, resultsInput
 };
 
 var blockExecQuery_ = function(block, queryStr, extraColumns, resultsHolder) {
-  console.log("blockExecQuery_", queryStr);
   if (!resultsHolder) {
     resultsHolder = block.getInput('RESULTS');
   }
   if (!resultsHolder) return;
-  var endpointUri_txt = block.getFieldValue('ENDPOINT');
+  // var endpointUri_txt = 'https://github.com/NecoraNyaru/KG/raw/refs/heads/main/secure_chain_kg.ttl';
+  var endpointUri_txt = 'http://localhost:3030/kg'
   var endpointUri = endpointUri_txt ? encodeURI(endpointUri_txt) : null;
   if (endpointUri != block.endpointUri || queryStr != block.sparqlQueryStr) {
     block.endpointUri = endpointUri;
