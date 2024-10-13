@@ -114,7 +114,57 @@ var sparqlExecAndPublish_ = function(endpointUrl, query, workspace, resultsInput
       resultField = msg.EXECUTION_NO_RESULTS;
     }
       else {
-      resultField = new FieldTable(data, extraColumns);
+        console.log("data", data);
+        const head = data.head.vars;
+        const rows = data.results.bindings;
+        const headLength = head.length;
+        const per = 100/headLength;
+        var thString = ''
+        thString += "<div style='display:flex; height: 30px; background-color: #f1f1f1; font-weight: bold; width: 100%'>"
+        for (var i = 0; i < head.length; i++) {
+          thString += "<div class='td' style='width:"+per+"%; overflow:hidden; text-overflow:ellipsis; white-space: nowrap;'>"+head[i]+"</div>"
+        }
+        thString += "</div>"
+        var rowString = ''
+        for (var i = 0; i < rows.length; i++) {
+          rowString += "<div style='display:flex; height: 30px; width: 100%;'>"
+          for (var j = 0; j < head.length; j++) {
+            rowString += "<div class='td' style='width:"+per+"%; overflow:hidden; text-overflow:ellipsis; white-space: nowrap;'>"+rows[i][head[j]].value+"</div>"
+          }
+
+          rowString += "</div>"
+        }
+        var cells = document.getElementsByClassName('.td');
+
+        for (var i = 0; i < cells.length; i++) {
+          cells[i].addEventListener('click', function(event) {
+            event.stopPropagation();
+
+            for (var j = 0; j < cells.length; j++) {
+              cells[j].style.overflow = 'hidden';
+              cells[j].style.whiteSpace = 'nowrap';
+              cells[j].style.backgroundColor = 'transparent';
+            }
+
+            this.style.overflow = 'visible';
+            this.style.whiteSpace = 'normal';
+            this.style.backgroundColor = '#f1f1f1';
+          });
+        }
+
+        document.addEventListener('click', function() {
+          for (var i = 0; i < cells.length; i++) {
+            cells[i].style.overflow = 'hidden';
+            cells[i].style.whiteSpace = 'nowrap';
+            cells[i].style.backgroundColor = 'transparent';
+          }
+        });
+        const resultTable = document.querySelector('#table');
+      
+        resultTable.innerHTML = thString + rowString;
+        
+        resultField = msg.EXECUTION_DONE;
+      // resultField = new FieldTable(data, extraColumns);
     }
     setResult_(resultsInput, resultField);
     callback(data);
@@ -156,13 +206,17 @@ var blockExecQuery_ = function(block, queryStr, extraColumns, resultsHolder) {
 
 };
 
-var blockExec_ = function(block, extraColumns, queryBlock, resultsHolder) {
+var blockExec_ = function(block, extraColumns, queryBlock, resultsHolder, isQuery) {
   if (!queryBlock) {
     queryBlock = block.getInputTargetBlock('QUERY');
   }
   var queryStr = SparqlGen.sparqlQuery(queryBlock);
   console.log("queryStr", queryStr);
-  blockExecQuery_(block, queryStr, extraColumns, resultsHolder);
+  const displayBlock = document.querySelector('textarea');
+  displayBlock.value = queryStr;
+  if(isQuery) {
+    blockExecQuery_(block, queryStr, extraColumns, resultsHolder);
+  }
 };
 
 module.exports = {

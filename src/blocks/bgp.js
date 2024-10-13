@@ -107,7 +107,7 @@ Blocks.block('sparql_verb_object', {
   init: function() {
     _initVerb(this);
     this.appendValueInput("OBJECT")
-        .appendField("has a")
+        .appendField("has a version called")
         .setCheck(typeExt("Object"))
     this.setInputsInline(true);
     this.setPreviousStatement(true, "PropertyList");
@@ -234,6 +234,24 @@ Blocks.block('sparql_is_called_object', {
     _initVerb(this);
     this.appendValueInput("OBJECT")
         .appendField("is called")
+        .setCheck(typeExt("Object"))
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, "PropertyList");
+    this.setNextStatement(true, "PropertyList");
+    // this.setTooltip(Msg.VERB_OBJECT_TOOLTIP);
+  }
+});
+
+Blocks.block('sparql_affects_object', {
+  /**
+   * Branch block consisting of a single verb (a predicate) followed by a single
+   * object.
+   * @this Blockly.Block
+   */
+  init: function() {
+    _initVerb(this);
+    this.appendValueInput("OBJECT")
+        .appendField("affects")
         .setCheck(typeExt("Object"))
     this.setInputsInline(true);
     this.setPreviousStatement(true, "PropertyList");
@@ -417,13 +435,11 @@ Blocks.block('sparql_typedsubject_propertylist', {
   init: function() {
     _initSubject(this);
     this.appendValueInput("SUBJECT")
-        .setCheck(typeExt("ResourceOrVar"));
+        .setCheck(typeExt("ResourceOrVar"))
+        .appendField("Type of ")
     this.appendValueInput("TYPE")
         .setCheck(typeExt("ObjectNotLiteral"))
-        .appendField("is a");
-    this.appendStatementInput("PROPERTY_LIST")
-        .setCheck("PropertyList")
-        .appendField("  &");
+        .appendField("is ");
     this.setInputsInline(true);
     this.setPreviousStatement(true, typeExt("TriplesBlock"));
     this.setNextStatement(true, typeExt("GraphPattern"));

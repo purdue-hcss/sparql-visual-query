@@ -27,16 +27,29 @@
       <body>
         <div id="blocklyDiv"></div>
         <textarea type="text" id='input' style="
-            width: 200px;
-            height: 100px;
+            width: 230px;
+            height: 500px;
             position: absolute;
             right: 10px;
             top: 24px;
         "> </textarea>
-        <button name="button" style="
-          position: absolute;
-          right: 10px;
-      ">Generate</button>
+        <button id="execute" style="
+            position: absolute;
+            right: 10px;
+            top: 0px;
+        ">Run</button>
+        <div id="table" style="
+            height: 200px;
+            width: 1343px;
+            position: absolute;
+            right: 10px;
+            background-color: white;
+            overflow-x:scroll;
+            bottom: 0px;
+            display: block;
+        ">
+          
+        </div>
         <xsl:call-template name="toolbox-demo"/>
         <xsl:call-template name="toolbox-test"/>
         <xsl:call-template name="toolbox-guide"/>

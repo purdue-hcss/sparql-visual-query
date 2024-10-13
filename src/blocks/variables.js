@@ -33,7 +33,7 @@ var VAR_TYPE_TO_HUE = {
     SOFTVERSION_VAR: 50,
     VULN_VAR: 150,
     VULNTYPE_VAR: 200,
-    HARDVERSION_VAR: 250 
+    HARDVERSION_VAR: 250
 }
 
 Blocks.block('sparql_variable', {
@@ -73,6 +73,32 @@ Blocks.block('sparql_variable', {
         this.setColour(VAR_TYPE_TO_HUE[type])
         this.inputList[0].fieldRow[0].setValue(MyVariable.getVariableTypeName(name))
     }
+});
+
+Blocks.block('sparql_type_version', {
+    /**
+     * Block for variable getter.
+     * @this Blockly.Block
+     */
+    init: function () {
+        // this.setHelpUrl(Blockly.Msg.VARIABLES_GET_HELPURL);
+        this.setHelpUrl(Blockly.Msg.VARIABLES_GET_HELPURL);
+        this.setColour(50);
+        this.appendDummyInput()
+            .appendField(" ")
+            .appendField("Version");
+        this.setOutput(true, "Var");
+        this.setTooltip('');
+        // this.appendDummyInput()
+        //     .appendField(Blockly.Msg.VARIABLES_GET_TITLE)
+        //     .appendField(new Blockly.FieldVariable(
+        //     Blockly.Msg.VARIABLES_GET_ITEM), 'VAR')
+        //     .appendField(Blockly.Msg.VARIABLES_GET_TAIL);
+        // this.setTooltip(Blockly.Msg.VARIABLES_GET_TOOLTIP);
+        // this.contextMenuMsg_ = Blockly.Msg.VARIABLES_GET_CREATE_SET;
+        // this.contextMenuType_ = 'variables_set';
+
+    },
 });
 
 Blockly.Blocks.variables_get = Blockly.Blocks.sparql_variable;

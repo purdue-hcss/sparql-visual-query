@@ -62,6 +62,18 @@ Sparql.sparql_has_a_version_called_object = function(block) {
   return code;
 };
 
+Sparql.sparql_verb_object = function(block) {
+  var value_verb = prefix+"has-a-version-called"
+  var value_object = Sparql.valueToCode(block, 'OBJECT', Sparql.ORDER_ATOMIC);
+  var code =
+      value_verb ?
+        ( prefix+"hasVersion" + ' ' +
+          (value_object ? value_object : '[]') +
+          Sparql.STMNT_BRK ) :
+        '';
+  return code;
+}
+
 Sparql.sparql_operate_on_object = function(block) {
   var value_verb = prefix+"operates-on"
   var value_object = Sparql.valueToCode(block, 'OBJECT', Sparql.ORDER_ATOMIC);
@@ -166,11 +178,8 @@ Sparql.sparql_typedsubject_propertylist = function(block) {
           block,
           'SUBJECT',
           Sparql.ORDER_ATOMIC);// || '[]';
-  var value_type =
-      Sparql.valueToCode(
-          block,
-          'TYPE',
-          Sparql.ORDER_ATOMIC);
+  var value_type = Sparql.blockToCode(block.getInputTargetBlock('TYPE'))
+      
   var statements_property_list =
       Sparql.stmJoin(
           Sparql.statementToCode(block, 'PROPERTY_LIST'),
@@ -179,7 +188,7 @@ Sparql.sparql_typedsubject_propertylist = function(block) {
       (value_type || statements_property_list !== '') ?
           ( (value_subject ? value_subject : '[]') +
             (value_type ?
-                ' a ' + value_type + (statements_property_list !== '' ? ';' : '') :
+                ' '+ prefix+'type ' + value_type + (statements_property_list !== '' ? ';' : '') :
                 '' ) +
             (statements_property_list !== '' ?
                 '\n' + statements_property_list :
@@ -188,6 +197,11 @@ Sparql.sparql_typedsubject_propertylist = function(block) {
           '';
   return code;
 };
+
+Sparql.sparql_type_version = function(block){
+  var code = prefix+'Version'
+  return code
+}
 
 Sparql.sparql_subject_propertylist = function(block) {
   var value_subject =

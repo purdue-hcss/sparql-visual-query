@@ -25,6 +25,17 @@
           </shadow>
         </statement>
       </block>
+      <block type="sparql_typedsubject_propertylist">
+        <value name="SUBJECT">
+          <shadow type="variables_get">
+            <field name="VAR">variable</field>
+          </shadow>
+        </value>
+        <value name="TYPE">
+          <shadow type="sparql_type_version">
+          </shadow>
+        </value>
+      </block>
       <sep gap="32"></sep>
       <block type="sparql_verb_object">
         <value name="OBJECT">
@@ -33,8 +44,8 @@
           </shadow>
         </value>
       </block>
-      <sep gap="8"></sep>
-      <block type="sparql_operate_on_object">
+      <!-- <sep gap="8"></sep> -->
+      <!-- <block type="sparql_operate_on_object">
         <value name="OBJECT">
           <shadow type="variables_get">
             <field name="VAR">hardware version</field>
@@ -64,6 +75,13 @@
             <field name="VAR">version</field>
           </shadow>
         </value>
+      </block> -->
+      <block type="sparql_affects_object">
+        <value name="OBJECT">
+          <shadow type="variables_get">
+            <field name="VAR">version</field>
+          </shadow>
+        </value>
       </block>
       <sep gap="8"></sep>
       <block type="sparql_is_called_object">
@@ -74,7 +92,7 @@
         </value>
       </block>
       <sep gap="32"></sep>
-      <block type="sparql_anonsubject_propertylist">
+      <!-- <block type="sparql_anonsubject_propertylist">
         <statement name="PROPERTY_LIST">
           <shadow type="sparql_verb_object">
             <value name="VERB">
@@ -89,7 +107,7 @@
             </value>
           </shadow>
         </statement>
-      </block>
+      </block> -->
     </category>
     <category name="&#xf101; Compose" colour="260">
       <block type="sparql_union">
@@ -299,7 +317,7 @@
         </value>
       </block>
     </category>
-    <!-- <category name="&#xf103; Math" colour="230">
+    <category name="&#xf103; Math" colour="230">
       <block type="sparql_math_number"></block>
       <sep gap="32"></sep>
       <block type="sparql_math_arithmetic">
@@ -385,7 +403,7 @@
       </block>
       <sep gap="8"></sep>
       <block type="sparql_math_random_float"></block>
-    </category>-->
+    </category>
     <category name="&#xf109; Text" colour="160">
       <block type="sparql_text"></block>
       <sep gap="8"></sep>
@@ -486,11 +504,18 @@
         </value>
       </block>
     </category>
-    <!--<category name="&#xf107; Resources" colour="20" custom="RESOURCE"></category> -->
+
+    <category name="&#xf107; Entities" colour="20">
+      <block type="sparql_type_version">
+      </block>
+      <block type="variables_get">
+        <field name="VAR">var</field>
+      </block>
+    </category>
     <!--<sep></sep>-->
     <!-- <category name="&#xf10b; Variables" colour="330" custom="VARIABLE"></category> -->
     <!-- <sep></sep> -->
-    <category name="&#xf10b; Entities" colour="330" custom="MY_VARIABLES"></category>
+    <!-- <category name="&#xf10b; Entities" colour="330" custom="MY_VARIABLES"></category> -->
     <sep></sep>
     <!--<category name="&#xf100; Vocab" colour="20">
       <category name="• RDF(S)">
