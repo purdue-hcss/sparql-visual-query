@@ -33,6 +33,77 @@
             </shadow>
           </value>
         </block>
+        <block type="sparql_no_execution_endpoint_query_fake">
+          <!-- <field name="ENDPOINT">http://dbpedia.org/sparql</field> -->
+          <field name="LIMIT">5</field>
+          <value name="WHERE">
+            <block type="sparql_subject_propertylist">
+              <value name="SUBJECT">
+                <block type="variables_get">
+                  <field name="VAR">lib</field>
+                </block>
+              </value>
+              <statement name="PROPERTY_LIST">
+                <block type="sparql_is_called_object">
+                  <value name="OBJECT">
+                    <block type="sparql_text">
+                      <field name="TEXT">ffmpeg</field>
+                    </block>
+                  </value>
+                </block>
+              </statement>
+            </block>
+          </value>
+          <value name="WHERE">
+            <block type="sparql_subject_propertylist">
+              <value name="SUBJECT">
+                <block type="variables_get">
+                  <field name="VAR">lib</field>
+                </block>
+              </value>
+              <statement name="PROPERTY_LIST">
+                <block type="sparql_has_a_version_called_object">
+                  <value name="OBJECT">
+                    <block type="variables_get">
+                      <field name="VAR">version</field>
+                    </block>
+                  </value>
+                </block>
+              </statement>
+            </block>
+          </value>
+           <value name="WHERE">
+              <block type="sparql_typedsubject_propertylist">
+                <value name="SUBJECT">
+                  <block type="variables_get">
+                    <field name="VAR">version</field>
+                  </block>
+                </value>
+                <value name="TYPE">
+                  <block type="sparql_type_version">
+                  </block>
+                </value>
+              </block>
+          </value>
+           <value name="WHERE">
+            <block type="sparql_subject_propertylist">
+              <value name="SUBJECT">
+                <block type="variables_get">
+                  <field name="VAR">cve</field>
+                </block>
+              </value>
+              <statement name="PROPERTY_LIST">
+                <block type="sparql_affects_object">
+                  <value name="OBJECT">
+                    <block type="variables_get">
+                      <field name="VAR">version</field>
+                    </block>
+                  </value>
+                </block>
+              </statement>
+            </block>
+          </value>
+        </block>
       </category>
       <xsl:call-template name="toolbox-common"/>
     </xml>

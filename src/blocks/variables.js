@@ -83,7 +83,7 @@ Blocks.block('sparql_type_version', {
     init: function () {
         // this.setHelpUrl(Blockly.Msg.VARIABLES_GET_HELPURL);
         this.setHelpUrl(Blockly.Msg.VARIABLES_GET_HELPURL);
-        this.setColour(50);
+        this.setColour(150);
         this.appendDummyInput()
             .appendField(" ")
             .appendField("Version");

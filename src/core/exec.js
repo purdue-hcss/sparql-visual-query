@@ -29,6 +29,7 @@ var SparqlGen = require('../generators/sparql.js'),
     MessageDisplay = require('./messageDisplay.js'),
     URL = require('url-parse');
 
+var endpointUri_txt = 'http://localhost:3030/kg'
 // var corsProxy = "https://cors-anywhere.herokuapp.com/";
 
 var sparqlExec_ = function(endpointUrl, query, callback) {
@@ -176,8 +177,6 @@ var blockExecQuery_ = function(block, queryStr, extraColumns, resultsHolder) {
     resultsHolder = block.getInput('RESULTS');
   }
   if (!resultsHolder) return;
-  // var endpointUri_txt = 'https://github.com/NecoraNyaru/KG/raw/refs/heads/main/secure_chain_kg.ttl';
-  var endpointUri_txt = 'http://localhost:3030/kg'
   var endpointUri = endpointUri_txt ? encodeURI(endpointUri_txt) : null;
   if (endpointUri != block.endpointUri || queryStr != block.sparqlQueryStr) {
     block.endpointUri = endpointUri;

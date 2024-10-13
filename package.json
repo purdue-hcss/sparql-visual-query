@@ -1,5 +1,5 @@
 {
-  "name": "softwareSparqlBlocks",
+  "name": "software-sparql-blocks",
   "version": "0.3.18",
   "description": "Building SPARQL queries through block programming",
   "main": "src/index.js",
@@ -11,14 +11,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/miguel76/SparqlBlocks.git"
+    "url": "git+https://github.com/ShushanArakelyan/sparqlblocks-demo-nsf.git"
   },
-  "author": "Miguel Ceriani <miguel.ceriani@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/miguel76/SparqlBlocks/issues"
+    "url": "https://github.com/ShushanArakelyan/sparqlblocks-demo-nsf/issues"
   },
-  "homepage": "https://sparqlblocks.org",
   "devDependencies": {
     "aliasify": "^2.0.0",
     "brfs": "^1.5.0",
