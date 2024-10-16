@@ -5,7 +5,7 @@
   <xsl:import href="toolboxCommon.xslt"/>
   <xsl:template name="toolbox-demo">
     <xml id="toolboxDemo" style="display: none">
-      <category name="&#xf106; Query" colour="290">
+      <category name="&#xf106; Query" colour="#DCBDD8">
         <block type="sparql_no_execution_endpoint_query_fake">
           <!-- <field name="ENDPOINT">http://dbpedia.org/sparql</field> -->
           <field name="LIMIT">5</field>

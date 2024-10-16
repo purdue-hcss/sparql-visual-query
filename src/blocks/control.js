@@ -29,7 +29,7 @@ var typeExt = Types.getExtension;
 Blocks.block('sparql_filter', {
   init: function() {
     this.setHelpUrl('http://www.w3.org/TR/sparql11-query/#scopeFilters');
-    this.setColour(210);
+    this.setColour('#A5CDD4');
     this.appendValueInput("CONDITION")
         .setCheck(typeExt("BooleanExpr"))
         .appendField("filter");
@@ -44,7 +44,7 @@ Blocks.block('sparql_filter', {
 Blocks.block('sparql_union', {
   init: function() {
     this.setHelpUrl('http://www.w3.org/TR/sparql11-query/#alternatives');
-    this.setColour(260);
+    this.setColour('#CDC1E4');
     this.appendStatementInput("OP1")
         .setCheck(typeExt("GraphPattern"));
         // .appendField("this");
@@ -63,7 +63,7 @@ Blocks.block('sparql_union', {
 Blocks.block('sparql_union1', {
   init: function() {
     this.setHelpUrl('http://www.w3.org/TR/sparql11-query/#alternatives');
-    this.setColour(260);
+    this.setColour('#CDC1E4');
     this.appendDummyInput().appendField("union");
     this.appendStatementInput("OP")
         .setCheck(typeExt("GraphPattern"));
@@ -77,7 +77,7 @@ Blocks.block('sparql_union1', {
 Blocks.block('sparql_optional', {
   init: function() {
     this.setHelpUrl('http://www.w3.org/TR/sparql11-query/#optionals');
-    this.setColour(260);
+    this.setColour('#CDC1E4');
     this.appendStatementInput("OP")
         .setCheck(typeExt("GraphPattern"))
         .appendField("optional");
@@ -91,7 +91,7 @@ Blocks.block('sparql_optional', {
 Blocks.block('sparql_graph', {
   init: function() {
     this.setHelpUrl('http://www.w3.org/TR/sparql11-query/#optionals');
-    this.setColour(260);
+    this.setColour('#CDC1E4');
     this.appendValueInput("GRAPHNAME")
         .setCheck(typeExt("ResourceOrVar"))
         .appendField("choose graph");

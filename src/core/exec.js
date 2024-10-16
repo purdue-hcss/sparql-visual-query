@@ -211,8 +211,8 @@ var blockExec_ = function(block, extraColumns, queryBlock, resultsHolder, isQuer
   }
   var queryStr = SparqlGen.sparqlQuery(queryBlock);
   console.log("queryStr", queryStr);
-  const displayBlock = document.querySelector('textarea');
-  displayBlock.value = queryStr;
+  const displayBlock = document.querySelector('#code');
+  displayBlock.innerHTML = queryStr;
   if(isQuery) {
     blockExecQuery_(block, queryStr, extraColumns, resultsHolder);
   }

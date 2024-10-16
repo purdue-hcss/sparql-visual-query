@@ -26,7 +26,7 @@ var _ = require('underscore'),
     Msg = require('../core/msg.js'),
     MyVariable = require('../core/myvariables.js');
 
-var HUE = 330;
+var HUE = '#B0CBE1';
 
 var VAR_TYPE_TO_HUE = {
     SOFTWARE_VAR: 300,
@@ -83,7 +83,7 @@ Blocks.block('sparql_type_version', {
     init: function () {
         // this.setHelpUrl(Blockly.Msg.VARIABLES_GET_HELPURL);
         this.setHelpUrl(Blockly.Msg.VARIABLES_GET_HELPURL);
-        this.setColour(150);
+        this.setColour('#F2BBB0');
         this.appendDummyInput()
             .appendField(" ")
             .appendField("Version");

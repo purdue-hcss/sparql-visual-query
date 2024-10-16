@@ -17,39 +17,99 @@
 
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
-
+        <script type="text/javascript" src="/path/to/highlight.pack.js"></script>
+<script type="text/javascript" src="/path/to/highlightjs-sparql/src/languages/sparql.js"></script>
         <xsl:if test="not($bundledLibs)">
           <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
         </xsl:if>
+        <style>
+        .blocklyToolboxDiv{
+          background-color: white !important;
+          border: #ccc solid 1px;
+          border-radius: 0 0 8px 0;
+          overflow: hidden !important;
+        }
+        .play-button{
+          border: 1px solid #dadce0;
+          border-radius: 4px;
+          box-sizing: border-box;
+          color: #1a73e8;
+          cursor: pointer;
+          display: inline-block;
+          font: 500 14px / 36px var(--font-family);
+          padding: 0 16px;
+          position: absolute;
+          right: 20px;
+          top: 5px;
+        }
+        #blocklyDiv{
+          float: left !important;
+          height: 100% !important;
+          width: 60% !important;
+        }
+        .blocklyFlyoutBackground {
+            fill: #39272e38 !important;
+        }
+        .operate{
+          height:60%;
+          width:100%;
+          display:flex;
+        }
+        .main{
+          height:100%;
+          width:100%;
+        }
+        #code{
+          height:100%;
+          width:40%;
+        }
+        #result{
+          width:100%;
+          height:40%;
+        }
+        #table{
+          width:100%;
+          height:100%;
+        }
+        .title{
+          width:100%;
+          height:35px;
+          background-color:#93AFC4;
+          font-size: 18px;
+          font-weight: 600;
+          display:flex;
+          align-items:center;
+          color:white;
+        }
+        </style>
 
       </head>
       <body>
-        <div id="blocklyDiv"></div>
-        <textarea type="text" id='input' style="
-            width: 230px;
-            height: 500px;
-            position: absolute;
-            right: 10px;
-            top: 24px;
-        "> </textarea>
-        <button id="execute" style="
-            position: absolute;
-            right: 10px;
-            top: 0px;
-        ">Run</button>
-        <div id="table" style="
-            height: 200px;
-            width: 1343px;
-            position: absolute;
-            right: 10px;
-            background-color: white;
-            overflow-x:scroll;
-            bottom: 0px;
-            display: block;
-        ">
-          
+      <div class="main">
+        <div class="operate">
+          <div id="blocklyDiv"></div>
+          <div type="text" id='code' style="
+              overflow:scroll;
+              background-color:white;
+              
+          "> </div>
         </div>
+        <div id="result">
+          <div class="title">Query Result</div>
+          <div id="table" style="
+              background-color: white;
+              overflow-x:scroll;
+              display: block;
+          ">
+        
+        </div>
+        </div>
+      </div>
+        <div id="execute" class="play-button"  style="display: block;">
+          Run
+        </div>
+        
         <xsl:call-template name="toolbox-demo"/>
         <xsl:call-template name="toolbox-test"/>
         <xsl:call-template name="toolbox-guide"/>

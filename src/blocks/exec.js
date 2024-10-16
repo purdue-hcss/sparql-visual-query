@@ -50,7 +50,7 @@ var execBlock = function(options) {
         // SELECT ... WHERE {}       
         const queryRegex = /SELECT\s*.*\s*WHERE\s*{(.*)}/;
         if(queryRegex.test(options.sparqlQueryStr)){
-          this.setColour(290);
+          this.setColour('#DCBDD8');
           // this.appendDummyInput();
           this.appendStatementInput("WHERE")
               .setCheck(typeExt("GraphPattern"))
@@ -91,7 +91,7 @@ var execBlock = function(options) {
         }
         this.setInputsInline(false);
         if (options.builtinQuery) {
-          this.setColour(290);
+          this.setColour('#DCBDD8');
           if (!options.selfLimiting) {
             this.appendDummyInput()
                 .appendField("Show only the first")
@@ -100,7 +100,7 @@ var execBlock = function(options) {
           }
         } else {
           if (options.baseQuery) {
-            this.setColour(290);
+            this.setColour('#DCBDD8');
             // this.appendDummyInput();
             this.appendStatementInput("WHERE")
                 .setCheck(typeExt("GraphPattern"))
@@ -108,7 +108,7 @@ var execBlock = function(options) {
             Blocks.query.orderFields.init.call(this);
             this.setInputsInline(true);
           } else {
-            this.setColour(330);
+            this.setColour('#DCBDD8');
             this.appendStatementInput("QUERY")
                 .setCheck(typeExt("SelectQuery"))
                 .appendField(" ⚙");

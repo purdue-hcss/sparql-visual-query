@@ -27,7 +27,7 @@ var _ = require('underscore'),
 
 var typeExt = Types.getExtension;
 
-var HUE = 230;
+var HUE = '#BDC6E5';
 
 Blocks.block('sparql_math_number', {
   /**

@@ -1,6 +1,6 @@
 {
   "name": "software-sparql-blocks",
-  "version": "0.3.18",
+  "version": "0.4.0",
   "description": "Building SPARQL queries through block programming",
   "main": "src/index.js",
   "directories": {
@@ -11,11 +11,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ShushanArakelyan/sparqlblocks-demo-nsf.git"
+    "url": "git+https://github.com/NecoraNyaru/Proto-OKN-SPARQL-Visualization.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ShushanArakelyan/sparqlblocks-demo-nsf/issues"
+    "url": "https://github.com/NecoraNyaru/Proto-OKN-SPARQL-Visualization/issues"
   },
   "devDependencies": {
     "aliasify": "^2.0.0",

@@ -3,7 +3,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="http://www.w3.org/1999/xhtml">
   <xsl:template name="toolbox-common">
-    <category name="&#xf104; Patterns" colour="120">
+    <category name="&#xf104; Patterns" colour="#B2CEB0">
       <block type="sparql_subject_propertylist">
         <value name="SUBJECT">
           <shadow type="variables_get">
@@ -109,7 +109,7 @@
         </statement>
       </block> -->
     </category>
-    <category name="&#xf101; Compose" colour="260">
+    <category name="&#xf101; Compose" colour="#CDC1E4">
       <block type="sparql_union">
         <value name="OP1">
           <shadow type="sparql_subject_propertylist">
@@ -215,7 +215,7 @@
       </block>
     </category>
     <sep></sep>
-    <category name="&#xf102; Logic" colour="210">
+    <category name="&#xf102; Logic" colour="#A5CDD4">
       <block type="sparql_filter">
         <value name="CONDITION">
           <shadow type="sparql_logic_boolean"></shadow>
@@ -317,7 +317,7 @@
         </value>
       </block>
     </category>
-    <category name="&#xf103; Math" colour="230">
+    <category name="&#xf103; Math" colour="#BDC6E5">
       <block type="sparql_math_number"></block>
       <sep gap="32"></sep>
       <block type="sparql_math_arithmetic">
@@ -404,7 +404,7 @@
       <sep gap="8"></sep>
       <block type="sparql_math_random_float"></block>
     </category>
-    <category name="&#xf109; Text" colour="160">
+    <category name="&#xf109; Text" colour="#A9CFC4">
       <block type="sparql_text"></block>
       <sep gap="8"></sep>
       <block type="sparql_text_with_lang">
@@ -505,7 +505,7 @@
       </block>
     </category>
 
-    <category name="&#xf107; Entities" colour="20">
+    <category name="&#xf107; Entities" colour="#B0CBE1">
       <block type="sparql_type_version">
       </block>
       <block type="variables_get">

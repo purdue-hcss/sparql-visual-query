@@ -44,7 +44,7 @@ var _init = function(newBlock) {
  */
 var _initVerb = function(newBlock) {
   _init(newBlock);
-  newBlock.setColour(65);
+  newBlock.setColour('#D9C597');
 };
 
 /**
@@ -53,7 +53,7 @@ var _initVerb = function(newBlock) {
  */
 var _initSubject = function(newBlock) {
   _init(newBlock);
-  newBlock.setColour(120);
+  newBlock.setColour('#B2CEB0');
 };
 
 
