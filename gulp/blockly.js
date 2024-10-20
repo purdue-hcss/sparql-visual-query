@@ -18,7 +18,6 @@ gulp.task('blockly', function() {
         ' return Blockly;})()'))
       .pipe(gulp.dest('lib'));
 });
-
 gulp.task('blocklyMsgEn', function() {
   return gulp.src(blocklyDir + '/msg/js/en.js')
       .pipe(replace(/goog\.[^\n]+/g, ''))

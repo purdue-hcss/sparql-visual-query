@@ -16,19 +16,15 @@
         <title>SparqlBlocks Demo</title>
 
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" />
+
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
         <xsl:if test="not($bundledLibs)">   
           <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha512-ExaEi+x+Zqq50MIBraxsK23lQQJZd8Q7ZDlwJsxQwsWlO8XvRouQev9ZWaFxCKdTvrgb2fmf2pglwGp61/7qZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-          <!-- <script type="text/javascript" src="js/turtle.js"></script>
-          <script type="text/javascript" src="js/sparql.js"></script>
-          <script type="text/javascript">
-              hljs.registerLanguage('turtle', window.hljsDefineTurtle);
-              hljs.registerLanguage('sparql', window.hljsDefineSparql);
-            hljs.initHighlightingOnLoad();
-          </script> -->
-            
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha512-ExaEi+x+Zqq50MIBraxsK23lQQJZd8Q7ZDlwJsxQwsWlO8XvRouQev9ZWaFxCKdTvrgb2fmf2pglwGp61/7qZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+          <!-- <script type="text/javascript" src="js/turtle.js"></script> -->
+          <!-- <script type="text/javascript" src="js/sparql.js"></script> -->
 
         </xsl:if>
         <style>
@@ -38,9 +34,24 @@
           border-radius: 0 0 8px 0;
           overflow: hidden !important;
         }
+        .keywords{
+          color: #770097;
+        }
+        .variable{
+          color:#2260C4;
+        }
+        .string{
+          color:#00521C;
+        }
+        .prefix{
+          color:#FF9842;
+        }
+        .url{
+          color:#42916B;
+        }
         .play-button{
-          border: 1px solid #dadce0;
-          border-radius: 4px;
+          width: 40px;
+          height:40px;
           box-sizing: border-box;
           color: #1a73e8;
           cursor: pointer;
@@ -48,13 +59,13 @@
           font: 500 14px / 36px var(--font-family);
           padding: 0 16px;
           position: absolute;
-          right: 20px;
-          top: 5px;
+          right: 37px;
+          top: 10px;
         }
         #blocklyDiv{
           float: left !important;
           height: 100% !important;
-          width: 60% !important;
+          width: 130% !important;
         }
         .blocklyFlyoutBackground {
             fill: #39272e38 !important;
@@ -71,6 +82,9 @@
         #code{
           height:100%;
           width:40%;
+          font-family: serif;
+          padding:30px 20px;
+          font-size:16x;
         }
         #result{
           width:100%;
@@ -78,7 +92,23 @@
         }
         #table{
           width:100%;
+          font-family:"Roboto";
           height:100%;
+        }
+        .tableHead{
+          display:flex; height: 40px; background-color: #f1f1f1; font-weight:bold; width: 100%;
+          align-items:center;
+          font-size:15px;
+        }
+        .tableRow{
+          display:flex; height: 40px; width: 100%;
+          align-items:center;
+          border-bottom:solid 1px rgba(224,224,224,1);
+        }
+        .td{
+          padding-left:10px;
+          line-height: 1.43;
+          letter-spacing: 0.01071em;
         }
         .title{
           width:100%;
@@ -89,6 +119,7 @@
           display:flex;
           align-items:center;
           color:white;
+          padding:5px;
         }
         </style>
 
@@ -96,12 +127,15 @@
       <body>
       <div class="main">
         <div class="operate">
+          <div id="execute" class="play-button"><svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" height="40" width="40" version="1.1" y="0px" x="0px" viewBox="0 0 72.900002 81.900002" aria-hidden="true"><path id="queryIcon" d="m69.6 35.2-60.3-34.3c-2.2-1.2-4.4-1.2-6.4 0s-2.9 3.4-2.9 5.6v68.8c0 2.2 1.2 4.4 2.9 5.6 1 0.5 2.2 1 3.4 1s2.2-0.5 2.9-1l60.3-34.3c2.2-1.2 3.4-3.4 3.4-5.6s-1.1-4.3-3.3-5.8z"></path><path id="loadingIcon" d="m61.184 36.167-48.73-27.719c-1.7779-0.96976-3.5558-0.96976-5.172 0-1.6163 0.96976-2.3436 2.7476-2.3436 4.5255v55.599c0 1.7779 0.96976 3.5558 2.3436 4.5255 0.80813 0.40407 1.7779 0.80813 2.7476 0.80813 0.96975 0 1.7779-0.40406 2.3436-0.80813l48.73-27.719c1.7779-0.96976 2.7476-2.7476 2.7476-4.5255s-0.88894-3.475-2.6668-4.6872z" fill="none"></path></svg></div>
           <div id="blocklyDiv"></div>
           <div type="text" id='code' style="
               overflow:scroll;
               background-color:white;
               
-          "> </div>
+          ">
+
+          </div>
         </div>
         <div id="result">
           <div class="title">Query Result</div>
@@ -114,9 +148,6 @@
         </div>
         </div>
       </div>
-        <div id="execute" class="play-button"  style="display: block;">
-          Run
-        </div>
         
         <xsl:call-template name="toolbox-demo"/>
         <xsl:call-template name="toolbox-test"/>

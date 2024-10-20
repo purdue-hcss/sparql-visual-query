@@ -3,7 +3,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="http://www.w3.org/1999/xhtml">
   <xsl:template name="toolbox-common">
-    <category name="&#xf104; Patterns" colour="#B2CEB0">
+    <category name="&#xf104; Prefix" colour="#B2CEB0">
       <block type="sparql_subject_propertylist">
         <value name="SUBJECT">
           <shadow type="variables_get">

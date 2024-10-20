@@ -121,14 +121,14 @@ var sparqlExecAndPublish_ = function(endpointUrl, query, workspace, resultsInput
         const headLength = head.length;
         const per = 100/headLength;
         var thString = ''
-        thString += "<div style='display:flex; height: 30px; background-color: #f1f1f1; font-weight: bold; width: 100%'>"
+        thString += "<div class='tableHead'>"
         for (var i = 0; i < head.length; i++) {
           thString += "<div class='td' style='width:"+per+"%; overflow:hidden; text-overflow:ellipsis; white-space: nowrap;'>"+head[i]+"</div>"
         }
         thString += "</div>"
         var rowString = ''
         for (var i = 0; i < rows.length; i++) {
-          rowString += "<div style='display:flex; height: 30px; width: 100%;'>"
+          rowString += "<div class='tableRow'>"
           for (var j = 0; j < head.length; j++) {
             rowString += "<div class='td' style='width:"+per+"%; overflow:hidden; text-overflow:ellipsis; white-space: nowrap;'>"+rows[i][head[j]].value+"</div>"
           }
@@ -172,22 +172,22 @@ var sparqlExecAndPublish_ = function(endpointUrl, query, workspace, resultsInput
   });
 };
 
-var blockExecQuery_ = function(block, queryStr, extraColumns, resultsHolder) {
+var blockExecQuery_ = function(block, highlightedCode, extraColumns, resultsHolder) {
   if (!resultsHolder) {
     resultsHolder = block.getInput('RESULTS');
   }
   if (!resultsHolder) return;
   var endpointUri = endpointUri_txt ? encodeURI(endpointUri_txt) : null;
-  if (endpointUri != block.endpointUri || queryStr != block.sparqlQueryStr) {
+  if (endpointUri != block.endpointUri || highlightedCode != block.sparqlQueryStr) {
     block.endpointUri = endpointUri;
-    block.sparqlQueryStr = queryStr;
+    block.sparqlQueryStr = highlightedCode;
     if (block.queryReq) {
       block.queryReq.abort();
     }
-    if (queryStr && endpointUri) {
+    if (highlightedCode && endpointUri) {
       block.resultsData = null;
       block.queryReq = sparqlExecAndPublish_(
-          endpointUri, queryStr,
+          endpointUri, highlightedCode,
           block.workspace,
           resultsHolder,
           extraColumns,
@@ -210,12 +210,43 @@ var blockExec_ = function(block, extraColumns, queryBlock, resultsHolder, isQuer
     queryBlock = block.getInputTargetBlock('QUERY');
   }
   var queryStr = SparqlGen.sparqlQuery(queryBlock);
-  console.log("queryStr", queryStr);
-  const displayBlock = document.querySelector('#code');
-  displayBlock.innerText = queryStr;
   if(isQuery) {
     blockExecQuery_(block, queryStr, extraColumns, resultsHolder);
   }
+
+  var highlightedCode = queryStr.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+ 
+  highlightedCode = highlightedCode.replace(/([ \t]+)/g, function(match) {
+    return '&nbsp;&nbsp;'.repeat(match.length); 
+  }).replace(/\n/g, '<br>');
+  // highlightedCode = highlightedCode.replace(/&lt;(.*?)&gt;/g, '<span class="url">&lt;$1&gt;</span>');
+  highlightedCode = highlightedCode.replace(/(['"])(?:(?=(\\?))\2.)*?\1/g, '<span class="string">$&</span>');
+  console.log("highlightedCode", highlightedCode);
+  const displayBlock = document.querySelector('#code');
+  const KEYWORD = [
+    'SELECT', 'DISTINCT', 'REDUCED', 'CONSTRUCT', 'DESCRIBE', 'ASK', 'WHERE',
+    'FROM', 'NAMED', 'ORDER', 'BY', 'ASC', 'DESC', 'LIMIT', 'OFFSET', 'FILTER',
+    'OPTIONAL', 'GRAPH', 'UNION', 'BASE', 'PREFIX', 'EXISTS', 'NOT', 'IN', 'BIND',
+    'SERVICE', 'MINUS', 'VALUES', 'LOAD', 'CLEAR', 'DROP', 'CREATE', 'ADD', 'MOVE',
+    'COPY', 'INSERT', 'DATA', 'DELETE', 'USING', 'DEFAULT', 'WITH', 'ALL', 'SILENT',
+    'TO', 'AS', 'UNDEF', 'GROUP', 'BY', 'HAVING', 'COALESCE', 'IF', 'STR', 'LANG',
+    'MATCHES', 'BOUND', 'SAME', 'TERM', 'PREFIX'
+  ]
+  var len = KEYWORD.length;
+  for (var i = 0; i < len; i++) {
+    const reg = new RegExp('\\b' + KEYWORD[i] + '\\b', 'gi');
+    highlightedCode = highlightedCode.replace(reg, "<span class='keywords'>"+KEYWORD[i]+'</span>');
+  }
+ 
+  highlightedCode = highlightedCode.replace(/\?\w+/g, "<span class='variable'>$&</span>");
+  
+  highlightedCode = highlightedCode.replace(/(\w+):(\w+)/g, '<span class="prefix">$1:$2</span>');
+  highlightedCode = highlightedCode.replace(/\b(\w+):(?!(\/\/))/g, '<span class="prefix">$&</span>');
+
+    
+  console.log(highlightedCode);
+  displayBlock.innerHTML = highlightedCode
+
 };
 
 module.exports = {
