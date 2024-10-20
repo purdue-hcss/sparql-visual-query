@@ -30,7 +30,7 @@ var typeContentExt = function(typeStr) {
   return typeExt(typeStr == "Var" ? "Expr" : typeStr);
 };
 
-var HUE = '#A5CDD4';
+var HUE = '#9AC6CE';
 
 Blocks.block('sparql_logic_compare', {
   /**

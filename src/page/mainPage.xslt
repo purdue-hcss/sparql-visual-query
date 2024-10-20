@@ -17,11 +17,19 @@
 
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/>
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
-        <script type="text/javascript" src="/path/to/highlight.pack.js"></script>
-<script type="text/javascript" src="/path/to/highlightjs-sparql/src/languages/sparql.js"></script>
-        <xsl:if test="not($bundledLibs)">
+        <xsl:if test="not($bundledLibs)">   
           <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha512-ExaEi+x+Zqq50MIBraxsK23lQQJZd8Q7ZDlwJsxQwsWlO8XvRouQev9ZWaFxCKdTvrgb2fmf2pglwGp61/7qZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+          <!-- <script type="text/javascript" src="js/turtle.js"></script>
+          <script type="text/javascript" src="js/sparql.js"></script>
+          <script type="text/javascript">
+              hljs.registerLanguage('turtle', window.hljsDefineTurtle);
+              hljs.registerLanguage('sparql', window.hljsDefineSparql);
+            hljs.initHighlightingOnLoad();
+          </script> -->
+            
+
         </xsl:if>
         <style>
         .blocklyToolboxDiv{
@@ -123,6 +131,15 @@
         <xsl:call-template name="dialogs-for-guide"/>
         
         <script src="js/sparqlblocks.min.js"></script>
+        <!-- <script type="text/javascript">
+          const code =  document.querySelector("#code")
+          code.addEventListener("change", function(){
+            code.innerHTML = hljs.highlight(
+              queryStr,
+              { language: 'sparql' }
+            ).value
+          })
+        </script> -->
       </body>
     </html>
   </xsl:template>
