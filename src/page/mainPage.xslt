@@ -22,9 +22,6 @@
         <xsl:if test="not($bundledLibs)">   
           <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha512-ExaEi+x+Zqq50MIBraxsK23lQQJZd8Q7ZDlwJsxQwsWlO8XvRouQev9ZWaFxCKdTvrgb2fmf2pglwGp61/7qZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-          <!-- <script type="text/javascript" src="js/turtle.js"></script> -->
-          <!-- <script type="text/javascript" src="js/sparql.js"></script> -->
 
         </xsl:if>
         <style>
@@ -125,30 +122,7 @@
 
       </head>
       <body>
-      <div class="main">
-        <div class="operate">
-          <div id="execute" class="play-button"><svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" height="40" width="40" version="1.1" y="0px" x="0px" viewBox="0 0 72.900002 81.900002" aria-hidden="true"><path id="queryIcon" d="m69.6 35.2-60.3-34.3c-2.2-1.2-4.4-1.2-6.4 0s-2.9 3.4-2.9 5.6v68.8c0 2.2 1.2 4.4 2.9 5.6 1 0.5 2.2 1 3.4 1s2.2-0.5 2.9-1l60.3-34.3c2.2-1.2 3.4-3.4 3.4-5.6s-1.1-4.3-3.3-5.8z"></path><path id="loadingIcon" d="m61.184 36.167-48.73-27.719c-1.7779-0.96976-3.5558-0.96976-5.172 0-1.6163 0.96976-2.3436 2.7476-2.3436 4.5255v55.599c0 1.7779 0.96976 3.5558 2.3436 4.5255 0.80813 0.40407 1.7779 0.80813 2.7476 0.80813 0.96975 0 1.7779-0.40406 2.3436-0.80813l48.73-27.719c1.7779-0.96976 2.7476-2.7476 2.7476-4.5255s-0.88894-3.475-2.6668-4.6872z" fill="none"></path></svg></div>
-          <div id="blocklyDiv"></div>
-          <div type="text" id='code' style="
-              overflow:scroll;
-              background-color:white;
-              
-          ">
-
-          </div>
-        </div>
-        <div id="result">
-          <div class="title">Query Result</div>
-          <div id="table" style="
-              background-color: white;
-              overflow-x:scroll;
-              display: block;
-          ">
-        
-        </div>
-        </div>
-      </div>
-        
+        <div id="blocklyDiv"></div>
         <xsl:call-template name="toolbox-demo"/>
         <xsl:call-template name="toolbox-test"/>
         <xsl:call-template name="toolbox-guide"/>
@@ -162,15 +136,6 @@
         <xsl:call-template name="dialogs-for-guide"/>
         
         <script src="js/sparqlblocks.min.js"></script>
-        <!-- <script type="text/javascript">
-          const code =  document.querySelector("#code")
-          code.addEventListener("change", function(){
-            code.innerHTML = hljs.highlight(
-              queryStr,
-              { language: 'sparql' }
-            ).value
-          })
-        </script> -->
       </body>
     </html>
   </xsl:template>
