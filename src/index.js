@@ -53,50 +53,562 @@ require('./blocks/table.js');
 require('./blocks/test.js');
 
 var createBlocks = function(dom){
-  var htmlString = '<?xml version="1.0" encoding="utf-8"?>' +
-    '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">' +
-    '  <xsl:import href="toolboxDemo.xslt"/>' +
-    '  <xsl:import href="toolboxTest.xslt"/>' +
-    '  <xsl:import href="toolboxGuide.xslt"/>' +
-    '  <xsl:import href="dialogsForGuide.xslt"/>' +
-    '  <xsl:param name="bundledLibs" select="false"/>' +
-    '  <xsl:template match="/"> ' +
-    '    <html lang="en"> ' +
-    '      <head> ' +
-    '        <meta charset="utf-8"/> ' +
-    '        <title>SparqlBlocks Demo</title> ' +
-    '        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"/> ' +
-    '        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" /> ' +
-    '        <link rel="stylesheet" type="text/css" href="css/style.css"/> ' +
-    '        <xsl:if test="not($bundledLibs)"> ' +
-    '          <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script> ' +
-    '          <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script> ' +
-    '          <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha512-ExaEi+x+Zqq50MIBraxsK23lQQJZd8Q7ZDlwJsxQwsWlO8XvRouQev9ZWaFxCKdTvrgb2fmf2pglwGp61/7qZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> ' +
-    '        </xsl:if> ' +
-    '        <style> ' +
-    '          /* 在这里插入你的 CSS 样式 */ ' +
-    '        </style> ' +
-    '      </head> ' +
-    '      <body> ' +
-    '        <div id="blocklyDiv"></div> ' +
-    '        <xsl:call-template name="toolbox-demo"/> ' +
-    '        <xsl:call-template name="toolbox-test"/> ' +
-    '        <xsl:call-template name="toolbox-guide"/> ' +
-    '        <div id="dialogShadow" class="dialogAnimate"></div> ' +
-    '        <div id="dialogBorder"></div> ' +
-    '        <div id="dialog"></div> ' +
-    '        <div id="flash-messages" class="flash-messages"></div> ' +
-    '        <xsl:call-template name="dialogs-for-guide"/> ' +
-    '        <script src="js/sparqlblocks.min.js"></script> ' +
-    '      </body> ' +
-    '    </html> ' +
-    '  </xsl:template> ' +
-    '</xsl:stylesheet>';
+  dom.innerHTML =  '<div id="blocklyDiv"></div>' +
+  '<xml id="toolboxDemo" style="display: none">' +
+'<category name=" Query" colour="#DCBDD8">' +
+'<block type="sparql_no_execution_endpoint_query_fake">' +
+'<field name="LIMIT">5</field>' +
+'<value name="WHERE">' +
+'<shadow type="sparql_subject_propertylist">' +
+'<value name="SUBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">subj</field>' +
+'</shadow>' +
+'</value>' +
+'<statement name="PROPERTY_LIST">' +
+'<shadow type="sparql_verb_object">' +
+'<value name="VERB">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">pred</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="OBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">obj</field>' +
+'</shadow>' +
+'</value>' +
+'</shadow>' +
+'</statement>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<block type="sparql_no_execution_endpoint_query_fake">' +
+'<field name="LIMIT">5</field>' +
+'<value name="WHERE">' +
+'<block type="sparql_subject_propertylist">' +
+'<value name="SUBJECT">' +
+'<block type="variables_get">' +
+'<field name="VAR">lib</field>' +
+'</block>' +
+'</value>' +
+'<statement name="PROPERTY_LIST">' +
+'<block type="sparql_is_called_object">' +
+'<value name="OBJECT">' +
+'<block type="sparql_text">' +
+'<field name="TEXT">ffmpeg</field>' +
+'</block>' +
+'</value>' +
+'</block>' +
+'</statement>' +
+'</block>' +
+'</value>' +
+'<value name="WHERE">' +
+'<block type="sparql_subject_propertylist">' +
+'<value name="SUBJECT">' +
+'<block type="variables_get">' +
+'<field name="VAR">lib</field>' +
+'</block>' +
+'</value>' +
+'<statement name="PROPERTY_LIST">' +
+'<block type="sparql_has_a_version_called_object">' +
+'<value name="OBJECT">' +
+'<block type="variables_get">' +
+'<field name="VAR">version</field>' +
+'</block>' +
+'</value>' +
+'</block>' +
+'</statement>' +
+'</block>' +
+'</value>' +
+'<value name="WHERE">' +
+'<block type="sparql_typedsubject_propertylist">' +
+'<value name="SUBJECT">' +
+'<block type="variables_get">' +
+'<field name="VAR">version</field>' +
+'</block>' +
+'</value>' +
+'<value name="TYPE">' +
+'<block type="sparql_type_version"></block>' +
+'</value>' +
+'</block>' +
+'</value>' +
+'<value name="WHERE">' +
+'<block type="sparql_subject_propertylist">' +
+'<value name="SUBJECT">' +
+'<block type="variables_get">' +
+'<field name="VAR">cve</field>' +
+'</block>' +
+'</value>' +
+'<statement name="PROPERTY_LIST">' +
+'<block type="sparql_affects_object">' +
+'<value name="OBJECT">' +
+'<block type="variables_get">' +
+'<field name="VAR">version</field>' +
+'</block>' +
+'</value>' +
+'</block>' +
+'</statement>' +
+'</block>' +
+'</value>' +
+'</block>' +
+'</category>' +
+'<category name=" Prefix" colour="#B2CEB0">' +
+'<block type="sparql_subject_propertylist">' +
+'<value name="SUBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">subj</field>' +
+'</shadow>' +
+'</value>' +
+'<statement name="PROPERTY_LIST">' +
+'<shadow type="sparql_verb_object">' +
+'<value name="OBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">obj</field>' +
+'</shadow>' +
+'</value>' +
+'</shadow>' +
+'</statement>' +
+'</block>' +
+'<block type="sparql_typedsubject_propertylist">' +
+'<value name="SUBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">variable</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="TYPE">' +
+'<shadow type="sparql_type_version"></shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="32"></sep>' +
+'<block type="sparql_verb_object">' +
+'<value name="OBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">version</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<block type="sparql_affects_object">' +
+'<value name="OBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">version</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_is_called_object">' +
+'<value name="OBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">text</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="32"></sep>' +
+'</category>' +
+'<category name=" Compose" colour="#CDC1E4">' +
+'<block type="sparql_union">' +
+'<value name="OP1">' +
+'<shadow type="sparql_subject_propertylist">' +
+'<value name="SUBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">subj</field>' +
+'</shadow>' +
+'</value>' +
+'<statement name="PROPERTY_LIST">' +
+'<shadow type="sparql_verb_object">' +
+'<value name="VERB">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">pred</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="OBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">obj</field>' +
+'</shadow>' +
+'</value>' +
+'</shadow>' +
+'</statement>' +
+'</shadow>' +
+'</value>' +
+'<value name="OP2">' +
+'<shadow type="sparql_subject_propertylist">' +
+'<value name="SUBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">subj</field>' +
+'</shadow>' +
+'</value>' +
+'<statement name="PROPERTY_LIST">' +
+'<shadow type="sparql_verb_object">' +
+'<value name="VERB">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">pred</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="OBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">obj</field>' +
+'</shadow>' +
+'</value>' +
+'</shadow>' +
+'</statement>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<block type="sparql_optional">' +
+'<value name="OP">' +
+'<shadow type="sparql_subject_propertylist">' +
+'<value name="SUBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">subj</field>' +
+'</shadow>' +
+'</value>' +
+'<statement name="PROPERTY_LIST">' +
+'<shadow type="sparql_verb_object">' +
+'<value name="VERB">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">pred</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="OBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">obj</field>' +
+'</shadow>' +
+'</value>' +
+'</shadow>' +
+'</statement>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<block type="sparql_graph">' +
+'<value name="GRAPHNAME">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">graph</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="OP">' +
+'<shadow type="sparql_subject_propertylist">' +
+'<value name="SUBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">subj</field>' +
+'</shadow>' +
+'</value>' +
+'<statement name="PROPERTY_LIST">' +
+'<shadow type="sparql_verb_object">' +
+'<value name="VERB">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">pred</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="OBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">obj</field>' +
+'</shadow>' +
+'</value>' +
+'</shadow>' +
+'</statement>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'</category>' +
+'<sep></sep>' +
+'<category name=" Logic" colour="#A5CDD4">' +
+'<block type="sparql_filter">' +
+'<value name="CONDITION">' +
+'<shadow type="sparql_logic_boolean"></shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="32"></sep>' +
+'<block type="sparql_logic_boolean"></block>' +
+'<sep gap="32"></sep>' +
+'<block type="sparql_logic_compare">' +
+'<value name="A">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">0</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="B">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">0</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_logic_operation">' +
+'<value name="A">' +
+'<shadow type="sparql_logic_boolean"></shadow>' +
+'</value>' +
+'<value name="B">' +
+'<shadow type="sparql_logic_boolean"></shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_logic_negate"></block>' +
+'<sep gap="32"></sep>' +
+'<block type="sparql_logic_ternary">' +
+'<value name="IF">' +
+'<shadow type="sparql_logic_boolean"></shadow>' +
+'</value>' +
+'<value name="THEN">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">1</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="ELSE">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">0</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="32"></sep>' +
+'<block type="sparql_exists">' +
+'<value name="OP">' +
+'<shadow type="sparql_subject_propertylist">' +
+'<value name="SUBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">subj</field>' +
+'</shadow>' +
+'</value>' +
+'<statement name="PROPERTY_LIST">' +
+'<shadow type="sparql_verb_object">' +
+'<value name="VERB">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">pred</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="OBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">obj</field>' +
+'</shadow>' +
+'</value>' +
+'</shadow>' +
+'</statement>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_not_exists">' +
+'<value name="OP">' +
+'<shadow type="sparql_subject_propertylist">' +
+'<value name="SUBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">subj</field>' +
+'</shadow>' +
+'</value>' +
+'<statement name="PROPERTY_LIST">' +
+'<shadow type="sparql_verb_object">' +
+'<value name="VERB">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">pred</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="OBJECT">' +
+'<shadow type="variables_get">' +
+'<field name="VAR">obj</field>' +
+'</shadow>' +
+'</value>' +
+'</shadow>' +
+'</statement>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'</category>' +
+'<category name=" Math" colour="#BDC6E5">' +
+'<block type="sparql_math_number"></block>' +
+'<sep gap="32"></sep>' +
+'<block type="sparql_math_arithmetic">' +
+'<value name="A">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">1</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="B">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">1</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_math_single">' +
+'<value name="NUM">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">-3</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_math_number_property">' +
+'<value name="NUMBER_TO_CHECK">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">0</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_math_round">' +
+'<value name="NUM">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">3.1</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_math_modulo">' +
+'<value name="DIVIDEND">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">64</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="DIVISOR">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">10</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_math_constrain">' +
+'<value name="VALUE">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">50</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="LOW">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">1</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="HIGH">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">100</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="32"></sep>' +
+'<block type="sparql_math_random_int">' +
+'<value name="FROM">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">1</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="TO">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">100</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_math_random_float"></block>' +
+'</category>' +
+'<category name=" Text" colour="#A9CFC4">' +
+'<block type="sparql_text"></block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_text_with_lang">' +
+'<field name="LANG">en</field>' +
+'</block>' +
+'<sep gap="32"></sep>' +
+'<block type="sparql_text_join"></block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_text_length">' +
+'<value name="VALUE">' +
+'<shadow type="sparql_text">' +
+'<field name="TEXT">abc</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_text_isEmpty">' +
+'<value name="VALUE">' +
+'<shadow type="sparql_text">' +
+'<field name="TEXT"></field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_text_charAt">' +
+'<value name="VALUE">' +
+'<shadow type="sparql_text">' +
+'<field name="TEXT">abc</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="AT">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">1</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_text_getSubstring">' +
+'<value name="STRING">' +
+'<shadow type="sparql_text">' +
+'<field name="TEXT">abc</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="AT1">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">2</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="AT2">' +
+'<shadow type="sparql_math_number">' +
+'<field name="NUM">3</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_text_changeCase">' +
+'<value name="TEXT">' +
+'<shadow type="sparql_text">' +
+'<field name="TEXT">abc</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="8"></sep>' +
+'<block type="sparql_text_contains">' +
+'<value name="FIND">' +
+'<shadow type="sparql_text">' +
+'<field name="TEXT">bc</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="VALUE">' +
+'<shadow type="sparql_text">' +
+'<field name="TEXT">abcd</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="32"></sep>' +
+'<block type="sparql_text_lang">' +
+'<value name="LANG">' +
+'<shadow type="sparql_text">' +
+'<field name="TEXT">en</field>' +
+'</shadow>' +
+'</value>' +
+'<value name="VALUE">' +
+'<shadow type="sparql_text_with_lang">' +
+'<field name="TEXT">play</field>' +
+'<field name="LANG">en</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'<sep gap="32"></sep>' +
+'<block type="sparql_hash">' +
+'<value name="TEXT">' +
+'<shadow type="sparql_text">' +
+'<field name="TEXT">abc</field>' +
+'</shadow>' +
+'</value>' +
+'</block>' +
+'</category>' +
+'<category name=" Entities" colour="#B0CBE1">' +
+'<block type="sparql_type_version"></block>' +
+'<block type="variables_get">' +
+'<field name="VAR">var</field>' +
+'</block>' +
+'</category>' +
+'<sep></sep>' +
+'</xml>';
 
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlString, "text/xml");
-  dom.appendChild(doc.documentElement);
 }
+
+var Exec = require("./core/exec.js");
+console.log(Exec)
 
 module.exports = {
   Storage: Storage,
@@ -104,7 +616,8 @@ module.exports = {
   Track: Track,
   WorkspaceActions: WorkspaceActions,
   BlocklyDialogs: BlocklyDialogs,
-  createBlocks:createBlocks,
+  createBlocks: createBlocks,
+  generateCode: Exec.generateCode,
 };
 
 // SparqlBlocks.Storage = Storage;

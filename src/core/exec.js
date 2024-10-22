@@ -115,54 +115,7 @@ var sparqlExecAndPublish_ = function(endpointUrl, query, workspace, resultsInput
       resultField = msg.EXECUTION_NO_RESULTS;
     }
       else {
-        console.log("data", data);
-        const head = data.head.vars;
-        const rows = data.results.bindings;
-        const headLength = head.length;
-        const per = 100/headLength;
-        var thString = ''
-        thString += "<div class='tableHead'>"
-        for (var i = 0; i < head.length; i++) {
-          thString += "<div class='td' style='width:"+per+"%; overflow:hidden; text-overflow:ellipsis; white-space: nowrap;'>"+head[i]+"</div>"
-        }
-        thString += "</div>"
-        var rowString = ''
-        for (var i = 0; i < rows.length; i++) {
-          rowString += "<div class='tableRow'>"
-          for (var j = 0; j < head.length; j++) {
-            rowString += "<div class='td' style='width:"+per+"%; overflow:hidden; text-overflow:ellipsis; white-space: nowrap;'>"+rows[i][head[j]].value+"</div>"
-          }
-
-          rowString += "</div>"
-        }
-        var cells = document.getElementsByClassName('.td');
-
-        for (var i = 0; i < cells.length; i++) {
-          cells[i].addEventListener('click', function(event) {
-            event.stopPropagation();
-
-            for (var j = 0; j < cells.length; j++) {
-              cells[j].style.overflow = 'hidden';
-              cells[j].style.whiteSpace = 'nowrap';
-              cells[j].style.backgroundColor = 'transparent';
-            }
-
-            this.style.overflow = 'visible';
-            this.style.whiteSpace = 'normal';
-            this.style.backgroundColor = '#f1f1f1';
-          });
-        }
-
-        document.addEventListener('click', function() {
-          for (var i = 0; i < cells.length; i++) {
-            cells[i].style.overflow = 'hidden';
-            cells[i].style.whiteSpace = 'nowrap';
-            cells[i].style.backgroundColor = 'transparent';
-          }
-        });
-        const resultTable = document.querySelector('#table');
       
-        resultTable.innerHTML = thString + rowString;
         
         resultField = msg.EXECUTION_DONE;
       // resultField = new FieldTable(data, extraColumns);
@@ -205,54 +158,28 @@ var blockExecQuery_ = function(block, highlightedCode, extraColumns, resultsHold
 
 };
 
+var sparqlCode = ''
+
 var blockExec_ = function(block, extraColumns, queryBlock, resultsHolder, isQuery) {
   if (!queryBlock) {
     queryBlock = block.getInputTargetBlock('QUERY');
   }
   var queryStr = SparqlGen.sparqlQuery(queryBlock);
+  sparqlCode = queryStr
   if(isQuery) {
     blockExecQuery_(block, queryStr, extraColumns, resultsHolder);
   }
-
-  var highlightedCode = queryStr.replace(/</g, '&lt;').replace(/>/g, '&gt;');
- 
-  highlightedCode = highlightedCode.replace(/([ \t]+)/g, function(match) {
-    return '&nbsp;&nbsp;'.repeat(match.length); 
-  }).replace(/\n/g, '<br>');
-  // highlightedCode = highlightedCode.replace(/&lt;(.*?)&gt;/g, '<span class="url">&lt;$1&gt;</span>');
-  highlightedCode = highlightedCode.replace(/(['"])(?:(?=(\\?))\2.)*?\1/g, '<span class="string">$&</span>');
-  console.log("highlightedCode", highlightedCode);
-  const displayBlock = document.querySelector('#code');
-  const KEYWORD = [
-    'SELECT', 'DISTINCT', 'REDUCED', 'CONSTRUCT', 'DESCRIBE', 'ASK', 'WHERE',
-    'FROM', 'NAMED', 'ORDER', 'BY', 'ASC', 'DESC', 'LIMIT', 'OFFSET', 'FILTER',
-    'OPTIONAL', 'GRAPH', 'UNION', 'BASE', 'PREFIX', 'EXISTS', 'NOT', 'IN', 'BIND',
-    'SERVICE', 'MINUS', 'VALUES', 'LOAD', 'CLEAR', 'DROP', 'CREATE', 'ADD', 'MOVE',
-    'COPY', 'INSERT', 'DATA', 'DELETE', 'USING', 'DEFAULT', 'WITH', 'ALL', 'SILENT',
-    'TO', 'AS', 'UNDEF', 'GROUP', 'BY', 'HAVING', 'COALESCE', 'IF', 'STR', 'LANG',
-    'MATCHES', 'BOUND', 'SAME', 'TERM', 'PREFIX'
-  ]
-  var len = KEYWORD.length;
-  for (var i = 0; i < len; i++) {
-    const reg = new RegExp('\\b' + KEYWORD[i] + '\\b', 'gi');
-    highlightedCode = highlightedCode.replace(reg, "<span class='keywords'>"+KEYWORD[i]+'</span>');
-  }
- 
-  highlightedCode = highlightedCode.replace(/\?\w+/g, "<span class='variable'>$&</span>");
-  
-  highlightedCode = highlightedCode.replace(/(\w+):(\w+)/g, '<span class="prefix">$1:$2</span>');
-  highlightedCode = highlightedCode.replace(/\b(\w+):(?!(\/\/))/g, '<span class="prefix">$&</span>');
-
-    
-  console.log(highlightedCode);
-  displayBlock.innerHTML = highlightedCode
-
 };
+
+var generateCode = function(){
+  return sparqlCode
+}
 
 module.exports = {
   sparqlExecAndPublish: sparqlExecAndPublish_,
   sparqlExecAndAlert: sparqlExecAndAlert_,
   sparqlExec: sparqlExec_,
   blockExec: blockExec_,
-  blockExecQuery: blockExecQuery_
+  blockExecQuery: blockExecQuery_,
+  generateCode: generateCode,
 };
