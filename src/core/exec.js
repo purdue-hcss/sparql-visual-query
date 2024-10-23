@@ -171,7 +171,7 @@ var blockExec_ = function(block, extraColumns, queryBlock, resultsHolder, isQuer
   }
 };
 
-var generateCode = function(){
+var getQuery = function(){
   return sparqlCode
 }
 
@@ -181,5 +181,5 @@ module.exports = {
   sparqlExec: sparqlExec_,
   blockExec: blockExec_,
   blockExecQuery: blockExecQuery_,
-  generateCode: generateCode,
+  getQuery: getQuery,
 };

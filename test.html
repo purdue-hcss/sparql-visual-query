@@ -29,11 +29,10 @@
     <script>
         var test = document.querySelector("#test")
         abc.createBlocks(test)
-        console.log(abc.generateCode())
 
         const btn = document.querySelector("#run");
         btn.addEventListener("click", function(){
-            console.log(abc.generateCode())
+            alert(abc.getQuery())
         })
         
     </script>

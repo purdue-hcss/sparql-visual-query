@@ -617,7 +617,7 @@ module.exports = {
   WorkspaceActions: WorkspaceActions,
   BlocklyDialogs: BlocklyDialogs,
   createBlocks: createBlocks,
-  generateCode: Exec.generateCode,
+  getQuery: Exec.getQuery,
 };
 
 // SparqlBlocks.Storage = Storage;
