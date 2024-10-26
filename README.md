@@ -1,4 +1,4 @@
-# sparal-visual-query
+# sparql-visual-query
 
 ## Usage
 
