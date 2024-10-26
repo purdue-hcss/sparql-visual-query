@@ -1,73 +1,58 @@
-# SparqlBlocks
-Using the [Blockly](https://developers.google.com/blockly) library
-for building [SPARQL](https://en.wikipedia.org/wiki/SPARQL) queries
-using visual blocks instead of code.
-
-http://sparqlblocks.org/
+# sparal-visual-query
 
 ## Usage
 
-Just serve statically the content of the directory `./dist`.
+Download `sparqlblocks.min.js`, `sparqlblocks.min.js.map` and `style.css` in `/dist`.
 
-For example, if you have python installed you can use SimpleHTTPServer
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Add dependencies --> 
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="/path/to/sparqlblocks.min.js"></script>
+    <script src="/path/to/sparqlblocks.min.js.map"></script>
+    <link href="/path/to/style.css" rel="stylesheet"></link>
+    
+    <style>
+        #test{
+            width: 100vw;
+            height: 100vh;
+        }
+        #run{
+            position:absolute;
+            top:20px;
+            right:40px;
+        }
+    </style>
 
-```sh
-cd dist
-python -m SimpleHTTPServer 8080
+</head>
+<body>
+    <div id="test"></div>
+    <button id="run">Run</button>
+    <script>
+        var test = document.querySelector("#test")
+        //  Add block's DOM to the custom DOM
+        sparqlVisualQuery.createBlocks(test)
+        // Set custom query endpointURL
+        sparqlVisualQuery.setURL("http://127.0.0.1:3030/kg")
+
+        const btn = document.querySelector("#run");
+        btn.addEventListener("click", function(){
+            // Get SPARQL code
+            alert(sparqlVisualQuery.getQuery()) 
+            // Get query result
+            sparqlVisualQuery.getResult().then((val)=>{
+                console.log(val);
+            });
+        })
+        
+    </script>
+</body>
+</html>
+
 ```
-
-and then open http://localhost:8080/.
-
-Alternatively, you can use the nodejs server in [SparqlBlocks-Server](https://github.com/miguel76/SparqlBlocks-Server) that offers also logging capability.
-
-## Contributing
-
-### Prerequisites
-
-To contribute you need to have [Node+npm](https://nodejs.org/), and [gulp](https://gulpjs.com/).
-
-#### Check for Node and npm
-
-Check if you've installed Node and npm.
-
-```sh
-node --version
-```
-```sh
-npm --version
-```
-
-#### Install Node and npm
-
-If you don't have them, download and install them from [Node.js website](https://nodejs.org/)
-
-#### Check for gulp
-
-Check if you've installed gulp.
-
-```sh
-gulp --version
-```
-
-#### Install gulp
-
-If you don't have gulp, run the following command to install it.
-
-```sh
-npm install --global gulp-cli
-```
-
-### Building
-
-To install the dependencies, run this command from the main dir.
-
-```sh
-npm install
-```
-
-To build the static files in `./dist` after a change, run gulp.
-
-```sh
-gulp
-```
-
