@@ -29,7 +29,16 @@ var SparqlGen = require('../generators/sparql.js'),
     MessageDisplay = require('./messageDisplay.js'),
     URL = require('url-parse');
 
-var endpointUri_txt = 'http://localhost:3030/kg'
+const protocol = window.location.protocol;
+const hostname = window.location.hostname;
+const baseUrl = protocol + '//' + hostname;
+var endpointUri_txt = baseUrl+':3030/kg'
+
+
+
+var setURL = function (url){
+  endpointUri_txt = url
+}
 // var corsProxy = "https://cors-anywhere.herokuapp.com/";
 
 var sparqlExec_ = function(endpointUrl, query, callback) {
@@ -175,6 +184,27 @@ var getQuery = function(){
   return sparqlCode
 }
 
+var getResult = function(){
+  var endpointUrl = endpointUri_txt ? encodeURI(endpointUri_txt) : null;
+  var parsedUrl = new URL(endpointUrl);
+  const query = getQuery()
+  parsedUrl.set(
+    'query',
+    (parsedUrl.query ? parsedUrl.query + '&' : '?') +
+    "query=" + encodeURIComponent(query));
+  return $.ajax({
+      headers: {Accept: "application/sparql-results+json"},
+      dataType: "json",
+      method: "GET",
+      url: parsedUrl.href})
+    .done(function(data) {
+      return data
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      console.log("Error: " + textStatus + " " + errorThrown);
+    });
+}
+
 module.exports = {
   sparqlExecAndPublish: sparqlExecAndPublish_,
   sparqlExecAndAlert: sparqlExecAndAlert_,
@@ -182,4 +212,6 @@ module.exports = {
   blockExec: blockExec_,
   blockExecQuery: blockExecQuery_,
   getQuery: getQuery,
+  setURL: setURL,
+  getResult: getResult
 };

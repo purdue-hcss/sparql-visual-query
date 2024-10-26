@@ -608,7 +608,6 @@ var createBlocks = function(dom){
 }
 
 var Exec = require("./core/exec.js");
-console.log(Exec)
 
 module.exports = {
   Storage: Storage,
@@ -618,6 +617,8 @@ module.exports = {
   BlocklyDialogs: BlocklyDialogs,
   createBlocks: createBlocks,
   getQuery: Exec.getQuery,
+  setURL:Exec.setURL,
+  getResult: Exec.getResult
 };
 
 // SparqlBlocks.Storage = Storage;

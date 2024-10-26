@@ -11,10 +11,10 @@ var BlocklyDialogs = SparqlBlocks.BlocklyDialogs;
 
 function start() {
 
-  var socket = io();
-  socket.on('error', function(errorData) {
-    console.warn('Error connecting to server socket:' + errorData);
-  });
+  // var socket = io();
+  // socket.on('error', function(errorData) {
+  //   console.warn('Error connecting to server socket:' + errorData);
+  // });
 
   var sURLVariables = decodeURIComponent(window.location.search.substring(1)).split('&');
   var sParameters = {};
@@ -115,7 +115,7 @@ function start() {
     $('#save-button').on('click', function() { SparqlBlocks.Storage.linkGist(); });
     SparqlBlocks.Storage.setCopyOnThisButton('#copy-button');
     SparqlBlocks.Storage.startup(workspace);
-    SparqlBlocks.Track.track(workspace, {webSocket: socket});
+    // SparqlBlocks.Track.track(workspace, {webSocket: socket});
 
     var dataNoticeDiv = document.getElementById("dialogDataNotice");
     if (!dataNoticeDiv)

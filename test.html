@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script src="./dist/js/sparqlblocks.min.js"></script>
     <script src="./dist/js/sparqlblocks.min.js.map"></script>
@@ -28,11 +29,16 @@
     <button id="run">Run</button>
     <script>
         var test = document.querySelector("#test")
-        abc.createBlocks(test)
+        sparqlVisualQuery.createBlocks(test)
+        // sparqlVisualQuery.setURL("https://proto-okn.naide.su:3030/kg")
+        sparqlVisualQuery.setURL("http://127.0.0.1:3030/kg")
 
         const btn = document.querySelector("#run");
         btn.addEventListener("click", function(){
-            alert(abc.getQuery())
+            alert(sparqlVisualQuery.getQuery())
+            sparqlVisualQuery.getResult().then((val)=>{
+                console.log(val);
+            });
         })
         
     </script>
