@@ -3,7 +3,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="http://www.w3.org/1999/xhtml">
   <xsl:template name="toolbox-common">
-    <category name="&#xf104; Prefix" colour="#B2CEB0">
+    <category name="&#xf104; Predicate" colour="#B2CEB0">
       <block type="sparql_subject_propertylist">
         <value name="SUBJECT">
           <shadow type="variables_get">
@@ -44,11 +44,20 @@
           </shadow>
         </value>
       </block>
-      <!-- <sep gap="8"></sep> -->
-      <!-- <block type="sparql_operate_on_object">
+      
+      <sep gap="8"></sep>
+      <block type="sparql_depends_on_object">
         <value name="OBJECT">
           <shadow type="variables_get">
-            <field name="VAR">hardware version</field>
+            <field name="VAR">version</field>
+          </shadow>
+        </value>
+      </block> 
+       <sep gap="8"></sep>
+      <block type="sparql_affects_object">
+        <value name="OBJECT">
+          <shadow type="variables_get">
+            <field name="VAR">version</field>
           </shadow>
         </value>
       </block>
@@ -61,25 +70,10 @@
         </value>
       </block>
       <sep gap="8"></sep>
-      <block type="sparql_is_a_object">
+      <block type="sparql_operate_on_object">
         <value name="OBJECT">
           <shadow type="variables_get">
-            <field name="VAR">vulnerability type</field>
-          </shadow>
-        </value>
-      </block>
-      <sep gap="8"></sep>
-      <block type="sparql_depends_on_object">
-        <value name="OBJECT">
-          <shadow type="variables_get">
-            <field name="VAR">version</field>
-          </shadow>
-        </value>
-      </block> -->
-      <block type="sparql_affects_object">
-        <value name="OBJECT">
-          <shadow type="variables_get">
-            <field name="VAR">version</field>
+            <field name="VAR">software</field>
           </shadow>
         </value>
       </block>

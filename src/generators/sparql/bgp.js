@@ -75,7 +75,7 @@ Sparql.sparql_verb_object = function(block) {
 }
 
 Sparql.sparql_operate_on_object = function(block) {
-  var value_verb = prefix+"operates-on"
+  var value_verb = prefix+"OperatesOn"
   var value_object = Sparql.valueToCode(block, 'OBJECT', Sparql.ORDER_ATOMIC);
   var code =
       value_verb ?
@@ -99,7 +99,7 @@ Sparql.sparql_is_a_object = function(block) {
 };
 
 Sparql.sparql_vulnerable_to_object = function(block) {
-  var value_verb = prefix+"vulnerable-to"
+  var value_verb = prefix+"vulnerableTo"
   var value_object = Sparql.valueToCode(block, 'OBJECT', Sparql.ORDER_ATOMIC);
   var code =
       value_verb ?
@@ -112,7 +112,7 @@ Sparql.sparql_vulnerable_to_object = function(block) {
 
 
 Sparql.sparql_depends_on_object = function(block) {
-  var value_verb = prefix+"depends-on"
+  var value_verb = prefix+"dependsOn"
   var value_object = Sparql.valueToCode(block, 'OBJECT', Sparql.ORDER_ATOMIC);
   var code =
       value_verb ?
